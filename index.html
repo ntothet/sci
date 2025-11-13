@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <!-- Für Smartphones optimiert -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>SCI Moers – Schnitzeljagd</title>
+  <style>
+    :root{
+      --topbar:56px;
+      --footer:56px;
+      --bg:#f7f8fc; --ink:#0a0a0a;
+      --bar:#182449; --tab:#30407a; --tab-active:#4c66d1;
+      --line:#cfd6ea;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);}
+
+    /* Intro (erste Seite) */
+    #introPanel{
+      min-height:100dvh;
+      padding:24px 16px 96px; /* Platz nach unten */
+      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+      gap:16px;
+      background:#fff;
+    }
+    #introLogo{height:56px; margin:8px auto 4px; display:block}
+
+    .intro-card{
+      width:100%; max-width:720px; background:#f9fbff; border:1px solid var(--line);
+      border-radius:14px; padding:16px;
+    }
+    .intro-card h1{margin:.2rem 0 0.5rem; font-size:1.25rem;}
+    .intro-card h2{margin:1rem 0 .35rem; font-size:1rem; color:#273469}
+    .intro-card p{margin:.5rem 0; line-height:1.4}
+    .intro-actions{margin-top:12px; display:flex; justify-content:center}
+    .btn{border:none; border-radius:12px; padding:.75rem 1.1rem; background:#4c66d1; color:#fff; font-weight:700}
+
+    /* Tabs (versteckt bis Start) */
+    .topbar{position:sticky;top:0;z-index:20;display:none;gap:.5rem;align-items:center;
+      height:var(--topbar); padding:.5rem; background:var(--bar);}
+    .topbar.visible{display:flex;}
+    .tab{flex:1;border:none;border-radius:12px;padding:.7rem 1rem;background:var(--tab);color:#e9eeff;font-weight:700}
+    .tab.active{background:var(--tab-active);color:#fff}
+
+    .panel{display:none}
+    .panel.active{display:block}
+
+    /* Kartenbereich */
+    .map-wrap{
+      position:relative;
+      height:calc(100dvh - var(--topbar) - var(--footer));
+      background:#fff;
+      overflow:hidden;
+      touch-action:none;
+      border-bottom:1px solid var(--line);
+    }
+    .map-inner{
+      position:absolute; left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      will-change:transform;
+    }
+    .map-img{
+      display:block;
+      width:auto; height:auto;          /* echte Pixelgröße -> scharf */
+      user-select:none; -webkit-user-drag:none; pointer-events:none;
+      max-width:none; max-height:none;
+      background:#eef2ff;
+    }
+
+    /* Rätsel / Textpanel */
+    .pad{
+      padding:1rem;
+      padding-bottom:calc(var(--footer) + 24px); /* Luft nach unten, nichts vom Footer verdeckt */
+    }
+    .pad h2{margin:.25rem 0 .5rem}
+    input[type="text"]{width:140px;text-align:center;border:1px solid #9aa0b4;border-radius:10px;padding:.65rem .75rem;font-size:1.05rem;background:#fff}
+    .btn-ghost{border:1px solid #cfd6ea; border-radius:10px; padding:.55rem .9rem; background:#fff; color:#0b1c5a; font-weight:700}
+    #result{font-weight:700;margin-left:.5rem}
+    .ok{color:#0a8a2a}
+    .error{color:#c40000}
+    .center-img{display:block; margin:10px auto; max-width:100%; height:auto; border-radius:10px}
+
+    /* Footer mit Logo (versteckt bis Start) */
+    footer{
+      position:fixed; left:0; right:0; bottom:0;
+      height:var(--footer);
+      background:#fff; border-top:1px solid var(--line);
+      display:none; align-items:center; justify-content:center;
+      padding:0 .75rem;
+    }
+    footer.visible{display:flex;}
+    footer img{height:34px; display:block}
+
+    body, .map-wrap { overscroll-behavior:none; }
+  </style>
+</head>
+<body>
+
+  <!-- INTRO / STARTSEITE -->
+  <section id="introPanel">
+    <img id="introLogo" src="https://www.total-lokal.de/custom/image_files/photo_1493439.png" alt="SCI Logo" />
+    <div class="intro-card">
+      <h1>Willkommen zur SCI-Schnitzeljagd durch Moers</h1>
+      <p>Ihr besucht den SCI in Moers – und erkundet die Stadt spielerisch. Auf der Karte sind Ziele markiert. Um sie freizuschalten, löst ihr mehrere kurze Rätsel. Jede Lösung besteht aus <b>vier Ziffern</b>. Mit jedem gelösten Rätsel wird mehr von der Karte sichtbar – und das nächste Ziel erscheint.</p>
+      <h2>Welcome – SCI City Quest in Moers</h2>
+      <p>You’re visiting SCI in Moers and will explore the city playfully. Targets are highlighted on the map. To unlock them, solve several short puzzles. Every solution is a <b>four-digit code</b>. Each success reveals more of the map and shows the next destination.</p>
+      <div class="intro-actions">
+        <button id="startBtn" class="btn">Start</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabs (ab Start sichtbar) -->
+  <header class="topbar" id="topbar">
+    <button id="tabMap" class="tab active">Karte</button>
+    <button id="tabText" class="tab">Quiz</button>
+  </header>
+
+  <!-- Karte -->
+  <section id="mapPanel" class="panel">
+    <div id="mapWrap" class="map-wrap">
+      <div id="mapInner" class="map-inner">
+        <img id="mapImage" class="map-img" alt="Map" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Rätsel / Inhalt -->
+  <section id="textPanel" class="panel">
+    <div class="pad" id="pad">
+      <h2 id="title">Rätsel 1</h2>
+      <div id="riddle"></div>
+      <div id="answerRow" style="margin-top:1rem;display:flex;gap:.5rem;align-items:center;">
+        <input id="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="____" />
+        <button class="btn-ghost" id="check">check</button>
+        <span id="result" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (ab Start sichtbar) -->
+  <footer id="footer">
+    <img src="https://www.total-lokal.de/custom/image_files/photo_1493439.png" alt="Logo" />
+  </footer>
+
+  <script>
+    /* ===== ELEMENTE ===== */
+    const introPanel = document.getElementById('introPanel');
+    const startBtn   = document.getElementById('startBtn');
+    const topbar     = document.getElementById('topbar');
+    const footer     = document.getElementById('footer');
+
+    const tabMap   = document.getElementById('tabMap');
+    const tabText  = document.getElementById('tabText');
+    const mapPanel = document.getElementById('mapPanel');
+    const textPanel= document.getElementById('textPanel');
+    const pad      = document.getElementById('pad');
+
+    const mapWrap  = document.getElementById('mapWrap');
+    const mapInner = document.getElementById('mapInner');
+    const img      = document.getElementById('mapImage');
+
+    const riddleDiv= document.getElementById('riddle');
+    const title    = document.getElementById('title');
+    const code     = document.getElementById('code');
+    const checkBtn = document.getElementById('check');
+    const result   = document.getElementById('result');
+    const answerRow= document.getElementById('answerRow');
+
+    /* ===== helper: immer nach ganz oben scrollen ===== */
+    function scrollTextTop(){
+      // Sicherstellen, dass die Infoseite oben startet
+      riddleDiv.scrollTop = 0;
+      pad.scrollTop = 0;
+      textPanel.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      window.scrollTo({top: 0, left: 0, behavior: 'auto'});
+    }
+
+    /* ===== TABS ===== */
+    tabMap.onclick = () => {
+      tabMap.classList.add('active'); tabText.classList.remove('active');
+      mapPanel.classList.add('active'); textPanel.classList.remove('active');
+      restoreTransform(); applyFromSU(); // identische Ansicht wiederherstellen
+    };
+    tabText.onclick = () => {
+      tabText.classList.add('active'); tabMap.classList.remove('active');
+      textPanel.classList.add('active'); mapPanel.classList.remove('active');
+      persistTransform();
+      scrollTextTop();
+    };
+
+    /* ===== BILDER ===== */
+    const MAP1 = "https://i.ibb.co/0R3pxRkx/map-1.jpg";
+    const MAP2 = "https://i.ibb.co/TD0JLftb/map-2.jpg";
+    const MAP3 = "https://i.ibb.co/C5L9Jhqg/map-3.jpg";
+    const mapUrls = [MAP1, MAP2, MAP3];
+
+    /* ===== RÄTSEL TEXTE ===== */
+    function getRiddle1Intro(){
+      return `
+        <h3>Rätsel 1 – Was ist ein „Stolperstein“?</h3>
+        <p>„Stolpersteine“ sind kleine Gedenktafeln aus Messing (10×10 cm), die im Gehweg verlegt werden – vor dem letzten frei gewählten Wohnort von Menschen, die im Nationalsozialismus verfolgt und ermordet wurden. Sie laden dazu ein, im Alltag innezuhalten und an einzelne Biografien zu denken.</p>
+        <img class="center-img" loading="lazy" referrerpolicy="no-referrer" src="https://www.westfalenspiegel.de/wp-content/uploads/IMG_6411.jpg" alt="Stolperstein" />
+        <p><b>Frage:</b> An der markierten Stelle in der Karte liegt ein Stolperstein. <i>Wann wurde die dort genannte Person geboren?</i> Trage das vierstellige Ergebnis ein (MM/JJ).</p>
+        <h3 style="margin-top:1rem">Puzzle 1 – What is a “Stolperstein”?</h3>
+        <p>“Stolpersteine” (“stumbling stones”) are small 10×10 cm brass memorials embedded in sidewalks in front of the victims’ last chosen residence during the Nazi era. They invite passers-by to pause and remember individual lives.</p>
+        <p><b>Question:</b> At the marked spot on the map there is a Stolperstein. <i>When was the person born?</i> Enter the four-digit code (MM/YY).</p>
+      `;
+    }
+
+    function getRiddle1SolvedInfo(){
+      return `
+        <h3>Mehr über Stolpersteine</h3>
+        <p>Das europaweite Kunst- und Erinnerungsprojekt wurde vom Künstler <b>Gunter Demnig</b> initiiert. Inzwischen wurden in vielen Ländern weit über <b>100.000 Steine</b> verlegt – jedes Exemplar ist einer Person gewidmet und wird lokal recherchiert. Die Steine liegen bewusst <b>im öffentlichen Raum</b>, meist vor der letzten frei gewählten Adresse, damit Erinnerung <b>mitten im Alltag</b> stattfindet.</p>
+        <ul>
+          <li>Messingflächen werden nicht versiegelt: <b>Durch das Polieren der Vorbeigehenden</b> bleiben die Namen sichtbar.</li>
+          <li>Verlegungen entstehen oft gemeinsam mit <b>Schulen, Initiativen, Archiven und Angehörigen</b>.</li>
+          <li>Die Biografien reichen von Kindern bis zu hochbetagten Menschen – jede Geschichte ist <b>einzeln dokumentiert</b>.</li>
+          <li>Viele Städte bieten <b>digitale Karten</b> und <b>Routen</b> zu Stolpersteinen – ideal für Spurensuche und Bildung.</li>
+        </ul>
+        <h3>More about Stolpersteine</h3>
+        <p>The project was initiated by artist <b>Gunter Demnig</b> and now comprises well over <b>100,000 stones</b> across Europe. Every stone is <b>locally researched</b> and placed in the <b>public sphere</b>, usually in front of the victim’s last chosen residence, bringing remembrance into daily life.</p>
+        <ul>
+          <li><b>Unsealed brass</b> is meant to be polished by passers-by, keeping the names readable.</li>
+          <li>Installations are often realised with <b>schools, local groups and families</b>.</li>
+          <li>Biographies cover people of all ages; each story is <b>individually documented</b>.</li>
+          <li>Many cities provide <b>digital maps</b> and <b>routes</b> for exploration and education.</li>
+        </ul>
+        <div style="text-align:center">
+          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
+               src="https://upload.wikimedia.org/wikipedia/commons/3/39/Moers%2C_Schloss%2C_2024-07_CN-01.jpg"
+               alt="Schloss Moers (Wikimedia Commons)" />
+          <small style="color:#5b647a">Schloss Moers – eine Station vieler Stadtspaziergänge.</small>
+        </div>
+        <div style="margin-top:.9rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+          <button id="nextBtn" class="btn">Continue</button>
+        </div>
+      `;
+    }
+
+    function getRiddle2Intro(){
+      return `
+        <h3>Rätsel 2 – Das „Geleucht“</h3>
+        <p>Auf der Halde Rheinpreußen leuchtet eine riesige rote Grubenlampe – das <b>„Geleucht“</b>, entworfen von <b>Otto Piene</b>. Von dort blickt man weit ins Ruhrgebiet. Dein nächstes Ziel ist auf der Karte markiert.</p>
+        <p><b>Frage:</b> Finde die Markierung auf der Karte. Welche vierstellige Lösung gehört zu diesem Ort? (Vorlage-Code)</p>
+        <div style="text-align:center">
+          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
+               src="https://upload.wikimedia.org/wikipedia/commons/1/18/Grubenlampe%2C_Halde_Rheinpreu%C3%9Fen%2C_Blaue_Stunde%2C_2010-10-09%2C_I.jpg"
+               alt="Das Geleucht – Halde Rheinpreußen (Wikimedia Commons)" />
+          <small style="color:#5b647a">Das „Geleucht“ bei blauem Abendhimmel.</small>
+        </div>
+        <h3>Puzzle 2 – The “Geleucht”</h3>
+        <p>On the Rheinpreußen spoil tip a giant red miner’s lamp shines – the <b>“Geleucht”</b> by <b>Otto Piene</b>. Your next target is marked on the map.</p>
+        <p><b>Question:</b> Find the marker on the map. Which four-digit code belongs to this place? (template code)</p>
+      `;
+    }
+
+    function getRiddle2SolvedInfo(){
+      return `
+        <h3>Mehr zum Geleucht</h3>
+        <p>Die Landmarke erinnert an die <b>Bergbaugeschichte</b> der Region. Nach Einbruch der Dunkelheit färben Lichtbänder die Halde in <b>rot</b> – ein weithin sichtbares Signal. Oben gibt es <b>Aussichtsplattformen</b>, Rundwege und Wind – perfekt, um die <b>Industriekultur</b> und die <b>Renaturierung</b> des Ruhrgebiets zu erleben.</p>
+        <ul>
+          <li>Höhe der Lampe: ca. <b>30 Meter</b>; weithin im Westen des Ruhrgebiets sichtbar.</li>
+          <li>Beliebt für <b>Sonnenuntergänge</b> und Nachtaufnahmen; bei klarer Sicht erkennt man Industrieachsen bis Duisburg.</li>
+          <li>Die Halde ist ein Beispiel dafür, wie ehemalige Arbeitsorte zu <b>Kultur- und Freizeitlandschaften</b> werden.</li>
+        </ul>
+        <h3>More about the Geleucht</h3>
+        <p>The landmark commemorates the area’s <b>mining heritage</b>. After dusk, red illumination turns the hill into a glowing sign. On top you’ll find <b>viewing platforms</b> and circular trails – a powerful place to sense both <b>industrial history</b> and <b>landscape recovery</b>.</p>
+        <ul>
+          <li>The lamp is around <b>30 metres</b> high and visible from afar.</li>
+          <li>Famous for <b>sunsets</b> and night photography; on clear days you can see towards Duisburg.</li>
+          <li>It’s a prime example of transforming industrial sites into <b>public culture & leisure spaces</b>.</li>
+        </ul>
+        <div style="margin-top:.9rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+          <button id="nextBtn" class="btn">Continue</button>
+        </div>
+      `;
+    }
+
+    /* ---------- NEU & UMFANGREICH: RÄTSEL 3 mit Moerser Persönlichkeit ---------- */
+    function getRiddle3Intro(){
+      return `
+        <h3>Rätsel 3 – Auf den Spuren von <em>Franz Ludwig Zahn</em></h3>
+        <p>Gesucht ist ein bedeutender <b>Moerser Pädagoge</b> des 19. Jahrhunderts: <b>Franz Ludwig Zahn</b>. Er leitete über Jahrzehnte das Lehrerseminar in Moers und prägte die Ausbildung von Elementarschullehrkräften – eng verbunden mit dem <b>Martinstift</b>.</p>
+        <div style="text-align:center">
+          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
+               src="https://upload.wikimedia.org/wikipedia/commons/1/11/Zahn-franz-ludwig-ninck-johannes-anna-schlatter-und-ihre-kinder-leipzig-schloessmanns-1934-s144f.jpg"
+               alt="Franz Ludwig Zahn" />
+        </div>
+        <p>Seine letzte Ruhestätte befindet sich auf dem <b>Privatfriedhof der Familie Zahn</b> in <b>Moers-Vinn</b>, unmittelbar neben dem städtischen Friedhof. Die Markierung auf der Karte weist in diese Richtung.</p>
+        <p><b>Aufgabe:</b> Finde den markierten Ort auf der Karte und trage <b>das Geburtsdatum von Franz Ludwig Zahn</b> als vierstelligen Code im Format <b>MM/JJ</b> ein.</p>
+
+        <h3>Puzzle 3 – Tracing <em>Franz Ludwig Zahn</em></h3>
+        <p>Find a renowned 19th-century <b>educationalist</b> from Moers: <b>Franz Ludwig Zahn</b>, long-time head of the local teacher training institute, closely linked to the <b>Martinstift</b>.</p>
+        <p>His grave lies at the <b>Zahn family’s private cemetery</b> in <b>Moers-Vinn</b>, right next to the municipal cemetery. The map marker points you there.</p>
+        <p><b>Task:</b> Enter <b>Franz Ludwig Zahn’s birth date</b> as a four-digit code in the format <b>MM/YY</b>.</p>
+      `;
+    }
+
+    function getRiddle3SolvedInfo(){
+      return `
+        <h3>Wer war Franz Ludwig Zahn?</h3>
+        <p><b>Franz Ludwig Zahn (1798–1890)</b> war ein evangelischer Pädagoge und langjähriger Leiter des Lehrerseminars in Moers. Er setzte sich für die <b>Qualifizierung von Elementarschullehrkräften</b> ein und gründete Institutionen, die weit in die Region wirkten. Mit dem <b>Martinstift</b> verband er Praxis, Lehrerbildung und Fürsorge.</p>
+        <ul>
+          <li>Er lebte und wirkte auf <b>Gut Fild</b> bei Moers; seine Familie legte einen <b>Privatfriedhof</b> an, der bis heute besteht.</li>
+          <li>Zahn veröffentlichte und vernetzte Bildungsakteure – ein früher Motor für <b>Bildung und Zivilgesellschaft</b> am Niederrhein.</li>
+          <li>In Moers erinnern <b>Gedenktafeln</b> und <b>Ortsstationen</b> an seine Arbeit.</li>
+        </ul>
+        <div style="text-align:center">
+          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
+               src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Grab_Fanz_Ludwig_Zahn.jpg/1200px-Grab_Fanz_Ludwig_Zahn.jpg"
+               alt="Grab von Franz Ludwig Zahn (Wikimedia Commons)" />
+          <small style="color:#5b647a">Grab von Franz Ludwig Zahn und seiner Ehefrau – Privatfriedhof der Familie Zahn (Vinn).</small>
+        </div>
+        <h3>Bezug zum SCI / Link to SCI</h3>
+        <p>Der SCI in Moers schlägt heute eine Brücke zwischen <b>Pädagogik</b> und <b>Psychologie</b> – mit Angeboten von Schule über Jugendhilfe bis zur Beratung. Im Geist Zahns geht es darum, <b>Menschen zu stärken</b>, Bildung zugänglich zu machen und <b>Teilhabe</b> zu ermöglichen.</p>
+        <p>The SCI in Moers continues this spirit by connecting <b>education</b> and <b>psychology</b>: schools, youth work and counselling aim to <b>empower people</b>, widen access to learning and foster <b>participation</b>.</p>
+        <div style="margin-top:.9rem; display:flex; gap:.5rem; flex-wrap:wrap;">
+          <button id="nextBtn" class="btn">Continue</button>
+        </div>
+      `;
+    }
+
+    function getFinalText(){
+      return `
+        <h3>Geschafft!</h3>
+        <p>Fantastisch – ihr habt alle Stationen entdeckt und die Codes geknackt. Wir wünschen euch, dass die Eindrücke nachwirken: die leisen Momente der Erinnerung an den <b>Stolperstein</b>, der weite Blick vom <b>Geleucht</b> über eine Region im Wandel und die Bildungswege, die Persönlichkeiten wie <b>Franz Ludwig Zahn</b> vorgezeichnet haben.</p>
+        <p>Als Gäste aus <b>Psychologie</b> und <b>Pädagogik</b> seid ihr Teil dieser Erzählung: Menschen begleiten, Potenziale stärken, Dialog ermöglichen. Bleibt neugierig, kommt mit den Moerserinnen und Moersern ins Gespräch – und nehmt Ideen mit zurück an eure Einrichtungen. Wir freuen uns auf weitere Begegnungen am SCI!</p>
+        <h3>Well done!</h3>
+        <p>Brilliant – you found all places and solved every code. May these impressions stay with you: the quiet act of remembrance at the <b>Stolperstein</b>, the expansive view from the <b>Geleucht</b>, and the educational legacy shaped by figures like <b>Franz Ludwig Zahn</b>.</p>
+        <p>As visitors from <b>psychology</b> and <b>education</b>, you are part of this story: supporting people, strengthening potential and creating dialogue. Stay curious, meet the people of Moers and take fresh ideas back to your institutions. We’re looking forward to seeing you again at SCI!</p>
+      `;
+    }
+
+    /* ===== RÄTSEL-DEFINITION ===== */
+    const stages = [
+      { html: getRiddle1Intro,  answer: "1111", info: getRiddle1SolvedInfo },
+      { html: getRiddle2Intro,  answer: "2222", info: getRiddle2SolvedInfo },
+      { html: getRiddle3Intro,  answer: "3333", info: getRiddle3SolvedInfo } // Franz Ludwig Zahn: 10/98 -> 1098
+    ];
+
+    /* ===== ZOOM / PAN STATE (mit relativen Koordinaten) ===== */
+    let s = 1, sMin = 1, sMax = 50;
+    let tx = 0, ty = 0;
+    let u = 0.5, vTop = 0.5;   // relative Bildmitte (u=0..1, vTop=0..1)
+    function getContainScale(){
+      const iw = img.naturalWidth || 1, ih = img.naturalHeight || 1;
+      const vw = mapWrap.clientWidth, vh = mapWrap.clientHeight;
+      return Math.min(vw/iw, vh/ih);
+    }
+    function getDisplaySize(){
+      const base = getContainScale();
+      const iw = img.naturalWidth || 1, ih = img.naturalHeight || 1;
+      return { w: iw * base * s, h: ih * base * s, vw: mapWrap.clientWidth, vh: mapWrap.clientHeight, base };
+    }
+    function clampPan(){
+      const { w, h, vw, vh } = getDisplaySize();
+      const maxX = Math.max(0, (w - vw)/2);
+      const maxY = Math.max(0, (h - vh)/2);
+      tx = Math.max(-maxX, Math.min(maxX, tx));
+      ty = Math.max(-maxY, Math.min(maxY, ty));
+    }
+    function applyTransform(){
+      const { w, h } = getDisplaySize();
+      img.style.width  = w + 'px';
+      img.style.height = h + 'px';
+      clampPan();
+      mapInner.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`;
+    }
+    function recomputeUV(){
+      const { w, h } = getDisplaySize();
+      if (w>0 && h>0){ u = 0.5 - (tx / w); vTop = 0.5 - (ty / h); }
+    }
+    function applyFromSU(){
+      const { w, h } = getDisplaySize();
+      tx = (0.5 - u) * w;
+      ty = (0.5 - vTop) * h;
+      applyTransform();
+    }
+
+    /* Startansicht für Bild 1: 300% + Fokus 75%/60% von unten */
+    const INITIAL_SCALE = 3.0;
+    const FOCAL_U = 0.75;
+    const FOCAL_V_TOP = 0.40;
+    function setInitialViewOnImage(){
+      s = Math.max(sMin, Math.min(sMax, INITIAL_SCALE));
+      u = FOCAL_U; vTop = FOCAL_V_TOP;
+      applyFromSU();
+    }
+
+    /* Persistenz über Reiter/Bildwechsel */
+    const STORAGE_KEY = "map_state_v3";
+    function persistTransform(){ recomputeUV(); sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ s, u, vTop })); }
+    function restoreTransform(){
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try{
+        const saved = JSON.parse(raw);
+        if (typeof saved.s === "number") s = Math.max(sMin, Math.min(sMax, saved.s));
+        if (typeof saved.u === "number") u = Math.min(1, Math.max(0, saved.u));
+        if (typeof saved.vTop === "number") vTop = Math.min(1, Math.max(0, saved.vTop));
+      }catch{}
+    }
+
+    window.addEventListener('beforeunload', persistTransform);
+    document.addEventListener('visibilitychange', ()=>{ if (document.hidden) persistTransform(); });
+
+    /* ===== BILD LADEN ===== */
+    function loadImage(url, { preserve=false } = {}){
+      return new Promise((resolve)=>{
+        img.onload = () => {
+          if (!preserve) { setInitialViewOnImage(); }
+          else { applyFromSU(); }
+          resolve(true);
+        };
+        img.onerror = () => resolve(false);
+        img.src = url + (url.includes('?') ? '&' : '?') + 'cb=' + Date.now();
+      });
+    }
+
+    let current = 0;
+    async function loadStage(i, {preserveTransform=false} = {}){
+      await loadImage(mapUrls[i], { preserve: preserveTransform });
+      title.textContent = 'Rätsel ' + (i + 1);
+      riddleDiv.innerHTML = stages[i].html();
+      result.textContent = '';
+      code.value = '';
+      answerRow.style.display = 'flex';
+      // Immer ganz nach oben, sobald der Text erscheint:
+      tabText.click(); // zeigt den Rätsel-Tab
+      scrollTextTop();
+    }
+
+    /* ===== START BUTTON ===== */
+    startBtn.onclick = async ()=>{
+      introPanel.style.display = 'none';
+      topbar.classList.add('visible');
+      footer.classList.add('visible');
+
+      mapPanel.classList.add('active');
+      textPanel.classList.add('active');
+      tabMap.classList.add('active');
+
+      await loadStage(0, { preserveTransform:false });
+      tabMap.click(); // Karte aktiv – Bild lädt mit Start-Zoom
+    };
+
+    /* ===== PRÜFEN / CONTINUE ===== */
+    function showSolvedInfoAndNext(){
+      // Info-Block des jeweiligen Rätsels anzeigen
+      // Für Rätsel 3: eigener Info-Block, sonst allgemeiner
+      let infoHtml;
+      if (current === 2) infoHtml = getRiddle3SolvedInfo();
+      else infoHtml = stages[current].info();
+
+      riddleDiv.innerHTML = infoHtml;
+      answerRow.style.display = 'none';
+      scrollTextTop(); // Info an der Oberkante beginnen
+
+      const nextA = document.getElementById('nextBtn');
+      const go = async ()=>{
+        persistTransform();       // s,u,v sichern
+        current++;
+        if (current < stages.length) {
+          await loadStage(current, {preserveTransform:true}); // Bildwechsel mit identischer Ansicht
+          tabMap.click(); // zurück zur Karte mit neuem Bild
+        } else {
+          // Finale Seite bleibt im Rätsel-Tab
+          title.textContent = 'Abschluss / Finish';
+          riddleDiv.innerHTML = getFinalText();
+          scrollTextTop();
+        }
+      };
+      if (nextA) nextA.onclick = go;
+    }
+
+    checkBtn.onclick = () => {
+      const val = code.value.trim();
+      if (val === stages[current].answer) {
+        result.textContent = '✔️ Richtig!'; result.className = 'ok';
+        showSolvedInfoAndNext();
+      } else {
+        result.textContent = '❌ Falsch!'; result.className = 'error';
+      }
+    };
+    code.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ checkBtn.click(); } });
+
+    /* ===== TOUCH: Pinch & Pan ===== */
+    const dist = (a,b)=>Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
+    const mid  = (a,b)=>({ x:(a.clientX+b.clientX)/2, y:(a.clientY+b.clientY)/2 });
+    let prevDist = 0, prevMid = null, panStart = null;
+    let lastTap = 0, pinching = false, lastPinchEnd = 0;
+
+    mapWrap.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+        pinching = true;
+        prevDist = dist(e.touches[0], e.touches[1]);
+        const r = mapWrap.getBoundingClientRect();
+        const m = mid(e.touches[0], e.touches[1]);
+        prevMid  = { x: m.x - (r.left + r.width/2), y: m.y - (r.top + r.height/2) };
+      } else if (e.touches.length === 1) {
+        panStart = { x: e.touches[0].clientX - tx, y: e.touches[0].clientY - ty };
+      }
+    }, { passive: true });
+
+    mapWrap.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const rect = mapWrap.getBoundingClientRect();
+
+      if (e.touches.length === 2) {
+        pinching = true;
+        const mScr = mid(e.touches[0], e.touches[1]);
+        const m = { x: mScr.x - (rect.left + rect.width/2), y: mScr.y - (rect.top + rect.height/2) };
+        const d  = dist(e.touches[0], e.touches[1]);
+
+        // 1) Pan um Midpoint
+        tx += (m.x - prevMid.x);
+        ty += (m.y - prevMid.y);
+
+        // 2) Zoom um Midpoint
+        const nextS = Math.min(sMax, Math.max(sMin, s * (d / prevDist || 1)));
+        const k = nextS / s;
+        tx = m.x - (m.x - tx) * k;
+        ty = m.y - (m.y - ty) * k;
+
+        s = nextS;
+        prevDist = d;
+        prevMid  = m;
+        applyTransform();
+      } else if (e.touches.length === 1 && panStart) {
+        tx = e.touches[0].clientX - panStart.x;
+        ty = e.touches[0].clientY - panStart.y;
+        applyTransform();
+      }
+    }, { passive: false });
+
+    mapWrap.addEventListener('touchend', (e) => {
+      if (pinching && e.touches.length < 2) {
+        pinching = false; lastPinchEnd = Date.now();
+      }
+      if (e.touches.length === 1) {
+        panStart = { x: e.touches[0].clientX - tx, y: e.touches[0].clientY - ty };
+      } else {
+        panStart = null; prevMid = null;
+      }
+      // Double-Tap Zoom (nur wenn kurz zuvor kein Pinch)
+      const now = Date.now();
+      if (now - lastPinchEnd > 350 && now - lastTap < 300 && e.changedTouches.length === 1) {
+        const rect = mapWrap.getBoundingClientRect();
+        const t = e.changedTouches[0];
+        const m = { x: t.clientX - (rect.left + rect.width/2), y: t.clientY - (rect.top + rect.height/2) };
+        const nextS = s < 2 ? 2 : 1;
+        const k = nextS / s;
+        tx = m.x - (m.x - tx) * k;
+        ty = m.y - (m.y - ty) * k;
+        s = nextS; applyTransform();
+      }
+      lastTap = now;
+      recomputeUV(); persistTransform();
+    });
+
+    /* Resize/Orientierung: identische Ansicht erhalten */
+    window.addEventListener('resize', ()=>{ applyFromSU(); persistTransform(); });
+    window.addEventListener('orientationchange', ()=>{ applyFromSU(); persistTransform(); });
+  </script>
+</body>
+</html>
+
+
+
+
+
