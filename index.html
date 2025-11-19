@@ -719,6 +719,11 @@
       clearAllAudios();
 
       riddleDiv.innerHTML = stages[current].info();
+
+      if (current === 5) {   // riddle 6 has index 5
+        mapImage.src = "map/7.jpg";
+        applyFromUV();   // keeps user's zoom + movement
+      }
       
 // Insert Moorsoldaten song button ONLY in riddle 2 info screen
         if (current === 1) {
@@ -848,6 +853,7 @@
   </script>
 </body>
 </html>
+
 
 
 
