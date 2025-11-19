@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <!-- Für Smartphones optimiert -->
+  <!-- Optimized for smartphones -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>SCI Moers – Schnitzeljagd</title>
+  <title>SCI Moers – Kolonie Quest</title>
   <style>
     :root{
       --topbar:56px;
@@ -15,39 +15,81 @@
     }
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{height:100%}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+    }
 
-    /* Intro (erste Seite) */
+    /* Intro (first screen) */
     #introPanel{
       min-height:100dvh;
-      padding:24px 16px 96px; /* Platz nach unten */
-      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+      padding:24px 16px 96px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
       gap:16px;
       background:#fff;
     }
-    #introLogo{height:56px; margin:8px auto 4px; display:block}
-
+    #introLogo{
+      height:56px;
+      margin:8px auto 4px;
+      display:block;
+    }
     .intro-card{
-      width:100%; max-width:720px; background:#f9fbff; border:1px solid var(--line);
-      border-radius:14px; padding:16px;
+      width:100%;
+      max-width:720px;
+      background:#f9fbff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:16px;
     }
     .intro-card h1{margin:.2rem 0 0.5rem; font-size:1.25rem;}
     .intro-card h2{margin:1rem 0 .35rem; font-size:1rem; color:#273469}
     .intro-card p{margin:.5rem 0; line-height:1.4}
     .intro-actions{margin-top:12px; display:flex; justify-content:center}
-    .btn{border:none; border-radius:12px; padding:.75rem 1.1rem; background:#4c66d1; color:#fff; font-weight:700}
+    .btn{
+      border:none;
+      border-radius:12px;
+      padding:.75rem 1.1rem;
+      background:#4c66d1;
+      color:#fff;
+      font-weight:700;
+    }
 
-    /* Tabs (versteckt bis Start) */
-    .topbar{position:sticky;top:0;z-index:20;display:none;gap:.5rem;align-items:center;
-      height:var(--topbar); padding:.5rem; background:var(--bar);}
+    /* Top tabs */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:none;
+      gap:.5rem;
+      align-items:center;
+      height:var(--topbar);
+      padding:.5rem;
+      background:var(--bar);
+    }
     .topbar.visible{display:flex;}
-    .tab{flex:1;border:none;border-radius:12px;padding:.7rem 1rem;background:var(--tab);color:#e9eeff;font-weight:700}
-    .tab.active{background:var(--tab-active);color:#fff}
+    .tab{
+      flex:1;
+      border:none;
+      border-radius:12px;
+      padding:.7rem 1rem;
+      background:var(--tab);
+      color:#e9eeff;
+      font-weight:700;
+    }
+    .tab.active{
+      background:var(--tab-active);
+      color:#fff;
+    }
 
     .panel{display:none}
     .panel.active{display:block}
 
-    /* Kartenbereich */
+    /* Map area */
     .map-wrap{
       position:relative;
       height:calc(100dvh - var(--topbar) - var(--footer));
@@ -57,37 +99,87 @@
       border-bottom:1px solid var(--line);
     }
     .map-inner{
-      position:absolute; left:50%; top:50%;
+      position:absolute;
+      left:50%; top:50%;
       transform:translate(-50%,-50%);
       will-change:transform;
     }
     .map-img{
       display:block;
-      width:auto; height:auto;          /* echte Pixelgröße -> scharf */
-      user-select:none; -webkit-user-drag:none; pointer-events:none;
-      max-width:none; max-height:none;
+      width:auto;
+      height:auto;
+      user-select:none;
+      -webkit-user-drag:none;
+      pointer-events:none;
+      max-width:none;
+      max-height:none;
       background:#eef2ff;
     }
 
-    /* Rätsel / Textpanel */
+    /* Riddle / text panel */
     .pad{
       padding:1rem;
-      padding-bottom:calc(var(--footer) + 24px); /* Luft nach unten, nichts vom Footer verdeckt */
+      padding-bottom:calc(var(--footer) + 24px); /* space so footer does not cover input */
     }
     .pad h2{margin:.25rem 0 .5rem}
-    input[type="text"]{width:140px;text-align:center;border:1px solid #9aa0b4;border-radius:10px;padding:.65rem .75rem;font-size:1.05rem;background:#fff}
-    .btn-ghost{border:1px solid #cfd6ea; border-radius:10px; padding:.55rem .9rem; background:#fff; color:#0b1c5a; font-weight:700}
+    input[type="text"]{
+      width:140px;
+      text-align:center;
+      border:1px solid #9aa0b4;
+      border-radius:10px;
+      padding:.65rem .75rem;
+      font-size:1.05rem;
+      background:#fff;
+    }
+    .btn-ghost{
+      border:1px solid #cfd6ea;
+      border-radius:10px;
+      padding:.55rem .9rem;
+      background:#fff;
+      color:#0b1c5a;
+      font-weight:700;
+    }
     #result{font-weight:700;margin-left:.5rem}
     .ok{color:#0a8a2a}
     .error{color:#c40000}
-    .center-img{display:block; margin:10px auto; max-width:100%; height:auto; border-radius:10px}
 
-    /* Footer mit Logo (versteckt bis Start) */
+    /* Audio play/pause button */
+    .audio-btn{
+      border:none;
+      background:#4c66d1;
+      color:#fff;
+      padding:0.55rem 1rem;
+      border-radius:10px;
+      font-weight:700;
+      margin-bottom:0.4rem;
+      margin-right:0.4rem;
+    }
+
+    /* Info images full width */
+    .info-image{
+      width:100%;
+      height:auto;
+      display:block;
+      margin:8px 0 4px;
+      border-radius:10px;
+    }
+    .info-caption{
+      color:#5b647a;
+      display:block;
+      margin-bottom:12px;
+      font-size:0.85rem;
+    }
+
+    /* Footer with logo */
     footer{
-      position:fixed; left:0; right:0; bottom:0;
+      position:fixed;
+      left:0; right:0; bottom:0;
       height:var(--footer);
-      background:#fff; border-top:1px solid var(--line);
-      display:none; align-items:center; justify-content:center;
+      background:#fff;
+      border-top:1px solid var(--line);
+      display:none;
+      align-items:center;
+      justify-content:center;
       padding:0 .75rem;
     }
     footer.visible{display:flex;}
@@ -98,27 +190,31 @@
 </head>
 <body>
 
-  <!-- INTRO / STARTSEITE -->
+  <!-- INTRO / START SCREEN -->
   <section id="introPanel">
     <img id="introLogo" src="https://www.total-lokal.de/custom/image_files/photo_1493439.png" alt="SCI Logo" />
     <div class="intro-card">
-      <h1>Willkommen zur SCI-Schnitzeljagd durch Moers</h1>
-      <p>Ihr besucht den SCI in Moers – und erkundet die Stadt spielerisch. Auf der Karte sind Ziele markiert. Um sie freizuschalten, löst ihr mehrere kurze Rätsel. Jede Lösung besteht aus <b>vier Ziffern</b>. Mit jedem gelösten Rätsel wird mehr von der Karte sichtbar – und das nächste Ziel erscheint.</p>
-      <h2>Welcome – SCI City Quest in Moers</h2>
-      <p>You’re visiting SCI in Moers and will explore the city playfully. Targets are highlighted on the map. To unlock them, solve several short puzzles. Every solution is a <b>four-digit code</b>. Each success reveals more of the map and shows the next destination.</p>
+      <h1>Welcome to the SCI Moers Kolonie Quest</h1>
+      <p>You are visiting SCI in Moers and exploring the Kolonie and its surroundings through short stories, traces of history and small riddles. The map shows locations linked to memory, everyday life and local culture. For each stop, you will hear a short audio and read a riddle.</p>
+      <p>Every solution is a <b>numeric code</b>. After entering the correct code, more background information is revealed and you can continue to the next stop.</p>
+      <h2>How it works</h2>
+      <p>1. Tap <b>Start</b>.<br>
+         2. Use the <b>Riddle</b> tab to read and listen, the <b>Map</b> tab to explore the location.<br>
+         3. Press the <b>audio buttons</b> to listen to each riddle (and, in one case, a song).<br>
+         4. Enter the code, press <b>Check</b> and then <b>Continue</b> to move on.</p>
       <div class="intro-actions">
         <button id="startBtn" class="btn">Start</button>
       </div>
     </div>
   </section>
 
-  <!-- Tabs (ab Start sichtbar) -->
+  <!-- Tabs -->
   <header class="topbar" id="topbar">
-    <button id="tabMap" class="tab active">Karte</button>
-    <button id="tabText" class="tab">Quiz</button>
+    <button id="tabMap" class="tab active">Map</button>
+    <button id="tabText" class="tab">Riddle</button>
   </header>
 
-  <!-- Karte -->
+  <!-- Map panel -->
   <section id="mapPanel" class="panel">
     <div id="mapWrap" class="map-wrap">
       <div id="mapInner" class="map-inner">
@@ -127,26 +223,26 @@
     </div>
   </section>
 
-  <!-- Rätsel / Inhalt -->
+  <!-- Riddle / content panel -->
   <section id="textPanel" class="panel">
     <div class="pad" id="pad">
-      <h2 id="title">Rätsel 1</h2>
+      <h2 id="title">Riddle 1</h2>
       <div id="riddle"></div>
       <div id="answerRow" style="margin-top:1rem;display:flex;gap:.5rem;align-items:center;">
         <input id="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="____" />
-        <button class="btn-ghost" id="check">check</button>
+        <button class="btn-ghost" id="check">Check</button>
         <span id="result" aria-live="polite"></span>
       </div>
     </div>
   </section>
 
-  <!-- Footer (ab Start sichtbar) -->
+  <!-- Footer -->
   <footer id="footer">
     <img src="https://www.total-lokal.de/custom/image_files/photo_1493439.png" alt="Logo" />
   </footer>
 
   <script>
-    /* ===== ELEMENTE ===== */
+    /* ELEMENT REFERENCES */
     const introPanel = document.getElementById('introPanel');
     const startBtn   = document.getElementById('startBtn');
     const topbar     = document.getElementById('topbar');
@@ -169,9 +265,8 @@
     const result   = document.getElementById('result');
     const answerRow= document.getElementById('answerRow');
 
-    /* ===== helper: immer nach ganz oben scrollen ===== */
+    /* Scroll helper – always start text at the top */
     function scrollTextTop(){
-      // Sicherstellen, dass die Infoseite oben startet
       riddleDiv.scrollTop = 0;
       pad.scrollTop = 0;
       textPanel.scrollTop = 0;
@@ -179,11 +274,11 @@
       window.scrollTo({top: 0, left: 0, behavior: 'auto'});
     }
 
-    /* ===== TABS ===== */
+    /* Tabs */
     tabMap.onclick = () => {
       tabMap.classList.add('active'); tabText.classList.remove('active');
       mapPanel.classList.add('active'); textPanel.classList.remove('active');
-      restoreTransform(); applyFromSU(); // identische Ansicht wiederherstellen
+      restoreTransform(); applyFromSU();
     };
     tabText.onclick = () => {
       tabText.classList.add('active'); tabMap.classList.remove('active');
@@ -192,160 +287,318 @@
       scrollTextTop();
     };
 
-    /* ===== BILDER ===== */
+    /* Map images (old images kept for now) */
     const MAP1 = "https://i.ibb.co/0R3pxRkx/map-1.jpg";
     const MAP2 = "https://i.ibb.co/TD0JLftb/map-2.jpg";
     const MAP3 = "https://i.ibb.co/C5L9Jhqg/map-3.jpg";
     const mapUrls = [MAP1, MAP2, MAP3];
 
-    /* ===== RÄTSEL TEXTE ===== */
+    /* --------- RIDDLE TEXTS & INFO (all English, German names unchanged) --------- */
+
     function getRiddle1Intro(){
       return `
-        <h3>Rätsel 1 – Was ist ein „Stolperstein“?</h3>
-        <p>„Stolpersteine“ sind kleine Gedenktafeln aus Messing (10×10 cm), die im Gehweg verlegt werden – vor dem letzten frei gewählten Wohnort von Menschen, die im Nationalsozialismus verfolgt und ermordet wurden. Sie laden dazu ein, im Alltag innezuhalten und an einzelne Biografien zu denken.</p>
-        <img class="center-img" loading="lazy" referrerpolicy="no-referrer" src="https://www.westfalenspiegel.de/wp-content/uploads/IMG_6411.jpg" alt="Stolperstein" />
-        <p><b>Frage:</b> An der markierten Stelle in der Karte liegt ein Stolperstein. <i>Wann wurde die dort genannte Person geboren?</i> Trage das vierstellige Ergebnis ein (MM/JJ).</p>
-        <h3 style="margin-top:1rem">Puzzle 1 – What is a “Stolperstein”?</h3>
-        <p>“Stolpersteine” (“stumbling stones”) are small 10×10 cm brass memorials embedded in sidewalks in front of the victims’ last chosen residence during the Nazi era. They invite passers-by to pause and remember individual lives.</p>
-        <p><b>Question:</b> At the marked spot on the map there is a Stolperstein. <i>When was the person born?</i> Enter the four-digit code (MM/YY).</p>
+        <p>There was a time of blood and death,<br>
+        When people were captured, forced to work to their final breath.<br>
+        They still lie here, in the Kolonie,<br>
+        Beneath small stones upon the meadow ground.<br>
+        The youngest of them holds the code —<br>
+        Seek it to learn more, and find the next location.</p>
+        <p><strong>Destination:</strong> Grave of Valentin Negoda</p>
+        <p>Enter the code you find and press <b>Check</b>.</p>
       `;
     }
 
-    function getRiddle1SolvedInfo(){
+    function getRiddle1Info(){
       return `
-        <h3>Mehr über Stolpersteine</h3>
-        <p>Das europaweite Kunst- und Erinnerungsprojekt wurde vom Künstler <b>Gunter Demnig</b> initiiert. Inzwischen wurden in vielen Ländern weit über <b>100.000 Steine</b> verlegt – jedes Exemplar ist einer Person gewidmet und wird lokal recherchiert. Die Steine liegen bewusst <b>im öffentlichen Raum</b>, meist vor der letzten frei gewählten Adresse, damit Erinnerung <b>mitten im Alltag</b> stattfindet.</p>
-        <ul>
-          <li>Messingflächen werden nicht versiegelt: <b>Durch das Polieren der Vorbeigehenden</b> bleiben die Namen sichtbar.</li>
-          <li>Verlegungen entstehen oft gemeinsam mit <b>Schulen, Initiativen, Archiven und Angehörigen</b>.</li>
-          <li>Die Biografien reichen von Kindern bis zu hochbetagten Menschen – jede Geschichte ist <b>einzeln dokumentiert</b>.</li>
-          <li>Viele Städte bieten <b>digitale Karten</b> und <b>Routen</b> zu Stolpersteinen – ideal für Spurensuche und Bildung.</li>
-        </ul>
-        <h3>More about Stolpersteine</h3>
-        <p>The project was initiated by artist <b>Gunter Demnig</b> and now comprises well over <b>100,000 stones</b> across Europe. Every stone is <b>locally researched</b> and placed in the <b>public sphere</b>, usually in front of the victim’s last chosen residence, bringing remembrance into daily life.</p>
-        <ul>
-          <li><b>Unsealed brass</b> is meant to be polished by passers-by, keeping the names readable.</li>
-          <li>Installations are often realised with <b>schools, local groups and families</b>.</li>
-          <li>Biographies cover people of all ages; each story is <b>individually documented</b>.</li>
-          <li>Many cities provide <b>digital maps</b> and <b>routes</b> for exploration and education.</li>
-        </ul>
-        <div style="text-align:center">
-          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
-               src="https://upload.wikimedia.org/wikipedia/commons/3/39/Moers%2C_Schloss%2C_2024-07_CN-01.jpg"
-               alt="Schloss Moers (Wikimedia Commons)" />
-          <small style="color:#5b647a">Schloss Moers – eine Station vieler Stadtspaziergänge.</small>
-        </div>
-        <div style="margin-top:.9rem; display:flex; gap:.5rem; flex-wrap:wrap;">
-          <button id="nextBtn" class="btn">Continue</button>
-        </div>
+        <h3>Background – Prisoners of war and forced laborers</h3>
+        <p>Prisoners of war and forced laborers replaced, between 1941 and 1945, in factories, on farms, and in households, the soldiers who had been sent to the front and the personnel who had been withdrawn for war service. Their number, as of March 31, 1943, amounted to 19,341 in the Moers–Geldern employment district — a quarter of all workers.</p>
+        <p>In the former district of Moers, there were at least 141 camps, the most brutal of which were the two concentration camp–like camps of the Friedrich Heinrich coal mine in Kamp-Lintfort. Responsible for the “deployment of Russians” (Russeneinsatz) throughout the Ruhr mining industry, since 1942, was Heinrich Kost, the general director of the mine here in Moers Meerbeck-Hochstraß.</p>
+        <p>The number of foreign victims in the former district of Moers must today be estimated at at least 921 — all officially registered and listed by name in the 2008 documentation “Moers under the Swastika”. Among them were no fewer than 754 young Russians and Ukrainians — considered “subhumans” according to the widely accepted racist terminology of that time.</p>
+
+        <img src="pictures/riddle_1_1.jpg" alt="Forced labourers including women" class="info-image" />
+        <small class="info-caption">Women were also used as forced labour.</small>
+
+        <img src="pictures/riddle_1_2.jpg" alt="Russian forced labourer" class="info-image" />
+        <small class="info-caption">A Russian forced labourer in the region.</small>
+
+        <img src="pictures/riddle_1_3.jpg" alt="Graves of forced labourers" class="info-image" />
+        <small class="info-caption">Graves remind us of the many foreign victims of forced labour in the Kolonie and its surroundings.</small>
       `;
     }
 
     function getRiddle2Intro(){
       return `
-        <h3>Rätsel 2 – Das „Geleucht“</h3>
-        <p>Auf der Halde Rheinpreußen leuchtet eine riesige rote Grubenlampe – das <b>„Geleucht“</b>, entworfen von <b>Otto Piene</b>. Von dort blickt man weit ins Ruhrgebiet. Dein nächstes Ziel ist auf der Karte markiert.</p>
-        <p><b>Frage:</b> Finde die Markierung auf der Karte. Welche vierstellige Lösung gehört zu diesem Ort? (Vorlage-Code)</p>
-        <div style="text-align:center">
-          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
-               src="https://upload.wikimedia.org/wikipedia/commons/1/18/Grubenlampe%2C_Halde_Rheinpreu%C3%9Fen%2C_Blaue_Stunde%2C_2010-10-09%2C_I.jpg"
-               alt="Das Geleucht – Halde Rheinpreußen (Wikimedia Commons)" />
-          <small style="color:#5b647a">Das „Geleucht“ bei blauem Abendhimmel.</small>
-        </div>
-        <h3>Puzzle 2 – The “Geleucht”</h3>
-        <p>On the Rheinpreußen spoil tip a giant red miner’s lamp shines – the <b>“Geleucht”</b> by <b>Otto Piene</b>. Your next target is marked on the map.</p>
-        <p><b>Question:</b> Find the marker on the map. Which four-digit code belongs to this place? (template code)</p>
+        <p>There was resistance in the Kolonie here,<br>
+        The miners defied the fascist spear.<br>
+        Beneath the soil, they shared their food;<br>
+        In lunchbox tins, their kindness brewed —<br>
+        A piece of bread for those in need,<br>
+        A silent act, a daring deed.</p>
+        <p>There is a song that speaks of solidarity,<br>
+        The sound of resistance, woven with clarity.<br>
+        Listen closely — its echoes trace<br>
+        The author’s spirit in this place,<br>
+        Here in the Kolonie.<br>
+        Find the sign with his name on it.</p>
+        <p><strong>Destination:</strong> street sign “Johann-Esser-Platz”</p>
+        <p>Enter the code you find and press <b>Check</b>.</p>
       `;
     }
 
-    function getRiddle2SolvedInfo(){
+    function getRiddle2Info(){
       return `
-        <h3>Mehr zum Geleucht</h3>
-        <p>Die Landmarke erinnert an die <b>Bergbaugeschichte</b> der Region. Nach Einbruch der Dunkelheit färben Lichtbänder die Halde in <b>rot</b> – ein weithin sichtbares Signal. Oben gibt es <b>Aussichtsplattformen</b>, Rundwege und Wind – perfekt, um die <b>Industriekultur</b> und die <b>Renaturierung</b> des Ruhrgebiets zu erleben.</p>
-        <ul>
-          <li>Höhe der Lampe: ca. <b>30 Meter</b>; weithin im Westen des Ruhrgebiets sichtbar.</li>
-          <li>Beliebt für <b>Sonnenuntergänge</b> und Nachtaufnahmen; bei klarer Sicht erkennt man Industrieachsen bis Duisburg.</li>
-          <li>Die Halde ist ein Beispiel dafür, wie ehemalige Arbeitsorte zu <b>Kultur- und Freizeitlandschaften</b> werden.</li>
-        </ul>
-        <h3>More about the Geleucht</h3>
-        <p>The landmark commemorates the area’s <b>mining heritage</b>. After dusk, red illumination turns the hill into a glowing sign. On top you’ll find <b>viewing platforms</b> and circular trails – a powerful place to sense both <b>industrial history</b> and <b>landscape recovery</b>.</p>
-        <ul>
-          <li>The lamp is around <b>30 metres</b> high and visible from afar.</li>
-          <li>Famous for <b>sunsets</b> and night photography; on clear days you can see towards Duisburg.</li>
-          <li>It’s a prime example of transforming industrial sites into <b>public culture & leisure spaces</b>.</li>
-        </ul>
-        <div style="margin-top:.9rem; display:flex; gap:.5rem; flex-wrap:wrap;">
-          <button id="nextBtn" class="btn">Continue</button>
-        </div>
+        <h3>Background – Resistance “Courageous Meerbeck”</h3>
+        <p>Miners and industrial workers in the southern part of the former Moers district showed a resistance to Nazi rule that was both courageous and widespread. In the 1990s, this resistance could still be documented — together with some of those involved or their families.</p>
+        <p>However, with the arrests of 1933–1935 and the trials of 1936, this uprising against the fascist dictatorship was largely crushed throughout the Moers district. Larger organized actions — such as those of the Social Democratic “bread deliverers” or of the Moers–Rheinhausen communists around Johann Esser — were no longer seen in the later years of the war.</p>
+        <p>Nevertheless, there continued to be individual victims — people who later could not take part in the democratic new beginning in Moers. Among the tormented “moor soldiers” (Moorsoldaten) of the Emsland camps after 1933 were several dozen resistance fighters from the Moers district.</p>
+        <p>The association “Remembering for the Future” (Erinnern für die Zukunft) plans to erect a memorial in their honor on the Meerbeck Market Square. The square was named in 2013 after Johann Esser, a communist from Moers-Oestrum and the poet of the well-known “Song of the Moor Soldiers” (Moorsoldatenlied) from the Esterwegen concentration camp.</p>
+
+        <img src="pictures/riddle_2_1.jpg" alt="Forced labourers in a coal mine" class="info-image" />
+        <small class="info-caption">Forced labourers working in a coal mine in the Ruhr area.</small>
+
+        <img src="pictures/riddle_2_2.jpg" alt="Johann Esser" class="info-image" />
+        <small class="info-caption">Johann Esser, communist from Moers-Oestrum and author of the “Song of the Moor Soldiers”.</small>
       `;
     }
 
-    /* ---------- NEU & UMFANGREICH: RÄTSEL 3 mit Moerser Persönlichkeit ---------- */
     function getRiddle3Intro(){
       return `
-        <h3>Rätsel 3 – Auf den Spuren von <em>Franz Ludwig Zahn</em></h3>
-        <p>Gesucht ist ein bedeutender <b>Moerser Pädagoge</b> des 19. Jahrhunderts: <b>Franz Ludwig Zahn</b>. Er leitete über Jahrzehnte das Lehrerseminar in Moers und prägte die Ausbildung von Elementarschullehrkräften – eng verbunden mit dem <b>Martinstift</b>.</p>
-        <div style="text-align:center">
-          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
-               src="https://upload.wikimedia.org/wikipedia/commons/1/11/Zahn-franz-ludwig-ninck-johannes-anna-schlatter-und-ihre-kinder-leipzig-schloessmanns-1934-s144f.jpg"
-               alt="Franz Ludwig Zahn" />
-        </div>
-        <p>Seine letzte Ruhestätte befindet sich auf dem <b>Privatfriedhof der Familie Zahn</b> in <b>Moers-Vinn</b>, unmittelbar neben dem städtischen Friedhof. Die Markierung auf der Karte weist in diese Richtung.</p>
-        <p><b>Aufgabe:</b> Finde den markierten Ort auf der Karte und trage <b>das Geburtsdatum von Franz Ludwig Zahn</b> als vierstelligen Code im Format <b>MM/JJ</b> ein.</p>
-
-        <h3>Puzzle 3 – Tracing <em>Franz Ludwig Zahn</em></h3>
-        <p>Find a renowned 19th-century <b>educationalist</b> from Moers: <b>Franz Ludwig Zahn</b>, long-time head of the local teacher training institute, closely linked to the <b>Martinstift</b>.</p>
-        <p>His grave lies at the <b>Zahn family’s private cemetery</b> in <b>Moers-Vinn</b>, right next to the municipal cemetery. The map marker points you there.</p>
-        <p><b>Task:</b> Enter <b>Franz Ludwig Zahn’s birth date</b> as a four-digit code in the format <b>MM/YY</b>.</p>
+        <p>A stone-cast sign of cultural diversity,<br>
+        its migrant stories carried here.<br>
+        Once Moers was mostly Protestant —<br>
+        migration softened what was ignorant.<br>
+        Now, as a symbol of pluralism in the Kolonie,<br>
+        it stands at the center, patient and still.<br>
+        Yet sometimes it wakes and rings,<br>
+        calling us gently under its wings.</p>
+        <p>From the place where the sound is born<br>
+        you’ll find small hollows in the stone —<br>
+        count them, and you’ll know the rest.</p>
+        <p><strong>Destination:</strong> Church of St. Barbara</p>
+        <p>Enter the code you work out and press <b>Check</b>.</p>
       `;
     }
 
-    function getRiddle3SolvedInfo(){
+    function getRiddle3Info(){
       return `
-        <h3>Wer war Franz Ludwig Zahn?</h3>
-        <p><b>Franz Ludwig Zahn (1798–1890)</b> war ein evangelischer Pädagoge und langjähriger Leiter des Lehrerseminars in Moers. Er setzte sich für die <b>Qualifizierung von Elementarschullehrkräften</b> ein und gründete Institutionen, die weit in die Region wirkten. Mit dem <b>Martinstift</b> verband er Praxis, Lehrerbildung und Fürsorge.</p>
-        <ul>
-          <li>Er lebte und wirkte auf <b>Gut Fild</b> bei Moers; seine Familie legte einen <b>Privatfriedhof</b> an, der bis heute besteht.</li>
-          <li>Zahn veröffentlichte und vernetzte Bildungsakteure – ein früher Motor für <b>Bildung und Zivilgesellschaft</b> am Niederrhein.</li>
-          <li>In Moers erinnern <b>Gedenktafeln</b> und <b>Ortsstationen</b> an seine Arbeit.</li>
-        </ul>
-        <div style="text-align:center">
-          <img class="center-img" loading="lazy" referrerpolicy="no-referrer"
-               src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Grab_Fanz_Ludwig_Zahn.jpg/1200px-Grab_Fanz_Ludwig_Zahn.jpg"
-               alt="Grab von Franz Ludwig Zahn (Wikimedia Commons)" />
-          <small style="color:#5b647a">Grab von Franz Ludwig Zahn und seiner Ehefrau – Privatfriedhof der Familie Zahn (Vinn).</small>
-        </div>
-        <h3>Bezug zum SCI / Link to SCI</h3>
-        <p>Der SCI in Moers schlägt heute eine Brücke zwischen <b>Pädagogik</b> und <b>Psychologie</b> – mit Angeboten von Schule über Jugendhilfe bis zur Beratung. Im Geist Zahns geht es darum, <b>Menschen zu stärken</b>, Bildung zugänglich zu machen und <b>Teilhabe</b> zu ermöglichen.</p>
-        <p>The SCI in Moers continues this spirit by connecting <b>education</b> and <b>psychology</b>: schools, youth work and counselling aim to <b>empower people</b>, widen access to learning and foster <b>participation</b>.</p>
-        <div style="margin-top:.9rem; display:flex; gap:.5rem; flex-wrap:wrap;">
-          <button id="nextBtn" class="btn">Continue</button>
-        </div>
+        <h3>Background – The Kolonie Meerbeck-Hochstraß</h3>
+        <p>With the sinking of the Rheinpreußen shafts IV in Hochstraß and V in Utfort in 1900, the settlement of Meerbeck-Hochstraß was designed on the drawing board. Construction of the “colony” — today one of the most beautiful mining settlements in Germany — began in March 1904, parallel to the start of coal production. Instead of the tenement blocks previously common in the Ruhr region, planners here followed the model of the English garden cities, designing various types of “living-kitchen houses” with separate entrances, kitchen gardens on the inside, and tree-lined streets, along with the possibility of keeping a goat or a pig. The rental contracts were tied to employment at the mine.</p>
+        <p>People came from across the German Empire, including Upper Silesia and the Ruhr area, as well as Slovenes, German-Austrians, Bohemians and Czechs, Hungarians, and Poles. This mixture of peoples got along well; the hardship faced by workers’ families forced solidarity and mutual aid. Associations helped strengthen community bonds. By the outbreak of the First World War, churches and schools, sports facilities, and cooperative stores had been built for roughly 10,000 newcomers — many of them Catholics.</p>
+        <p>Between 1942 and 1944, the “colony,” situated between the Rheinpreußen fuel plant and Moers railway station — an area that had still voted clearly against Hitler in 1932/33 — was heavily affected by bombing raids; many houses were destroyed and many lives were lost.</p>
+        <p>With the economic boom after the Second World War, local industry’s demand for labor increased. With the recruitment agreements of the 1950s and 1960s, many people from Italy, Spain, Portugal, and Turkey came to the Ruhr region, including to the colony in Moers-Meerbeck. In addition to Christian churches, Meerbeck is also home to a mosque for its many Muslim residents, as well as a Buddhist temple.</p>
+
+        <img src="pictures/riddle_3_1.jpg" alt="Miners setting a friction prop around 1950" class="info-image" />
+        <small class="info-caption">Miners setting a friction prop, around 1950 – scenes like this shaped everyday life for many families in the Kolonie.</small>
+      `;
+    }
+
+    function getRiddle4Intro(){
+      return `
+        <p>The time of Nazism was dark and cold;<br>
+        It cut away morality, left hearts controlled.<br>
+        So many people perished then —<br>
+        Slaughtered, murdered, again and again,<br>
+        Tortured and burned in endless night,<br>
+        Victims of a crime beyond all right.</p>
+        <p>You walk on streets that carry that history,<br>
+        On stones that whisper of human misery —<br>
+        A time when lives were wiped away<br>
+        For resistance, for race, for daring to stay.</p>
+        <p>There stands a marker of stone and steel,<br>
+        And next to it five stones lie sealed.<br>
+        What binds them together reveals the key —<br>
+        A quiet truth of memory.</p>
+        <p><strong>Destination:</strong> Memorial “Familie Leiss / Christen”, Ruhrstraße 76, 47443 Moers</p>
+        <p>Enter the code you find and press <b>Check</b>.</p>
+      `;
+    }
+
+    function getRiddle4Info(){
+      return `
+        <h3>Background – The Leiss an Christen family</h3>
+        <p>The Leiss an Christen family, a mining family from Moers of Polish descent, was executed in February 1943 in the Sachsenhausen concentration camp near Oranienburg on the explicit orders of Reichsführer-SS Heinrich Himmler, because a son of the family had allegedly defected during the Battle of Stalingrad. The annihilation of this family took place under the so-called principle of Sippenhaft (kin liability). Introduced by the National Socialists in 1933 as a repressive measure against relatives of opponents of the regime, the Nazis now applied the instrument of Sippenhaft to the families of deserters and defectors. It was intended as a deterrent at a time when the capitulation of the German 6th Army at Stalingrad marked a turning point to the disadvantage of Nazi rule in the Second World War.</p>
+        <p>After being arrested by the Gestapo in Moers, the entire family — including the three-year-old Marianne Leiss and two heavily pregnant women — was deported to the Sachsenhausen concentration camp and murdered there. As a deterrent, the Nazi press reported nationwide on this criminal act under the headline “Polish Traitor Family Neutralized”. The memorial stele commemorates the fate of the family and bears the title “Torn from the World”.</p>
+
+        <img src="pictures/riddle_4_1.jpg" alt="Leiss family portrait" class="info-image" />
+        <small class="info-caption">Josefa Leiss (seated left), her daughter Hanna, married Christen; standing (from left) the sons Josef, Wenzel and Felix Leiss. Bottom right: father Franz Leiss, who had already died at the time of the family’s arrest.</small>
+
+        <img src="pictures/riddle_4_2.jpg" alt="Stolpersteine for Theodora and Marianne Leiss" class="info-image" />
+        <small class="info-caption">Stolpersteine for the murdered Theodora and Marianne Leiss. Marianne was only two years old when she was killed.</small>
+      `;
+    }
+
+    function getRiddle5Intro(){
+      return `
+        <p>The Kolonie holds a magical place,<br>
+        Where one of the greatest stories<br>
+        Is celebrated with lights and glories,<br>
+        And brings a smile to every face.</p>
+        <p>From afar, the shimmering lights appear,<br>
+        Like stars on the ground, they shine so clear.<br>
+        When you arrive, a warming brew awaits —<br>
+        A cup of hot wine to open winter’s gates.</p>
+        <p>While you sip your glowing wine,<br>
+        Count the reindeer, Santas, and snowmen in line,<br>
+        And you will be ready, your heart in time,<br>
+        To discover the secret of this rhyme.</p>
+        <p><strong>Destination:</strong> Christmas House, Moselstraße 12m, 47443 Moers</p>
+        <p>Enter the code you find and press <b>Check</b>.</p>
+      `;
+    }
+
+    function getRiddle5Info(){
+      return `
+        <h3>Background – The Moers Christmas House</h3>
+        <p>The Moers Christmas House is a privately run project that is carried out in free time. The house is located in Moers at Moselstraße 12 m (left).</p>
+        <p>The decorations and lighting are in the garden and courtyard behind the house. Visitors are therefore asked to ring the doorbell at the Scheepers family, Moselstraße 12 m (left), or to use the side entrance (illuminated tree and lit gate arch) at Moselstraße 10 g. “We wish everyone a wonderful Christmas season and look forward to your visit. Hot mulled wine and other hot or cold drinks are also available.”</p>
+        <p>The Moers Christmas House is decorated with over 80,000 lights, accompanied by cozy Christmas music, every day from 5:00 PM to 9:00 PM.</p>
+
+        <img src="pictures/riddle_5_1.jpg" alt="Moers Christmas House" class="info-image" />
+        <small class="info-caption">The Moers Christmas House with thousands of lights, music and hot drinks – a seasonal highlight in the Kolonie.</small>
+      `;
+    }
+
+    function getRiddle6Intro(){
+      return `
+        <p>Where morning slowly finds the street,<br>
+        a little booth stands, warm and neat.<br>
+        Its window glows before the sun,<br>
+        a friendly place for everyone.</p>
+        <p>Newspapers whisper in the breeze,<br>
+        the coffee drifts with gentle ease.<br>
+        A quiet “Moin,” a nod, a grin —<br>
+        the Pott begins its day within.</p>
+        <p>Kids swap candies, dreams, and plans,<br>
+        coins dance lightly in their hands.<br>
+        Stories gather, come and go —<br>
+        the booth has heard them all, you know.</p>
+        <p>Seek the booth if you want a treat,<br>
+        and on the bottom of its paper sheet,<br>
+        you’ll find the path to the final shelter,<br>
+        guiding you safe through every welter.</p>
+        <p><strong>Destination:</strong> Kirschenallee 33, 47443 Moers</p>
+        <p>Enter the code you find and press <b>Check</b>.</p>
+      `;
+    }
+
+    function getRiddle6Info(){
+      return `
+        <h3>Dinner Time &amp; Kiosk Culture</h3>
+        <p><b>Dinner Time → Go to: Zum Bollwerk 107, 47441 Moers</b></p>
+        <p>And while you walk, here’s some info on “Kiosk” in Germany:</p>
+        <p>The history of kiosks in Germany began with the “Wasserhäuschen” (little water houses) in the Ruhr area in the mid-19th century, which were intended to offer workers healthy refreshments. From the original drinking halls, which later also sold newspapers, today’s kiosks and small stands (“Büdchen”) developed. The word “kiosk” itself originally comes from Turkish and referred to garden pavilions before it entered German in the 18th century via French.</p>
+        <h4>Origins and Development</h4>
+        <p>Word origin: The word “kiosk” comes from Persian (“köşk”) and means “garden pavilion”.</p>
+        <p>Cultural transmission: In the 18th century, it came into German via the French word “kiosque” and originally referred to freestanding pavilions in parks and palaces.</p>
+        <p>Wasserhäuschen: In Germany, the precursors to modern kiosks emerged during industrialization in the 19th century, particularly in the Ruhr area.</p>
+        <p>Purpose: These “Wasserhäuschen” were intended to offer industrial workers a healthy alternative to alcohol by selling mineral water.</p>
+        <p>Expansion of offerings: Over time, newspapers and other goods were added to the selection of the Wasserhäuschen.</p>
+        <h4>Kiosk Culture in Germany</h4>
+        <p>Center: The Rhine-Ruhr region is considered the stronghold of German kiosk culture, as many kiosks developed there near factories and mines.</p>
+        <p>Cultural significance: Kiosks are more than just points of sale; they have become important places for social interaction and everyday urban life.</p>
+        <p>Regionally different names: Today, they exist under various names such as “Büdchen,” “Wasserhäuschen,” “Späti,” or “Trinkhalle”.</p>
+
+        <img src="pictures/riddle_6_1.jpg" alt="Trinkhalle in Meerbeck around 1910" class="info-image" />
+        <small class="info-caption">A “Trinkhalle” in Meerbeck around 1910 – early predecessors of today’s kiosks.</small>
+
+        <img src="pictures/riddle_6_2.jpg" alt="Kiosk in Duisburg" class="info-image" />
+        <small class="info-caption">A kiosk in Duisburg – kiosks remain important social meeting points across the Ruhr region.</small>
       `;
     }
 
     function getFinalText(){
       return `
-        <h3>Geschafft!</h3>
-        <p>Fantastisch – ihr habt alle Stationen entdeckt und die Codes geknackt. Wir wünschen euch, dass die Eindrücke nachwirken: die leisen Momente der Erinnerung an den <b>Stolperstein</b>, der weite Blick vom <b>Geleucht</b> über eine Region im Wandel und die Bildungswege, die Persönlichkeiten wie <b>Franz Ludwig Zahn</b> vorgezeichnet haben.</p>
-        <p>Als Gäste aus <b>Psychologie</b> und <b>Pädagogik</b> seid ihr Teil dieser Erzählung: Menschen begleiten, Potenziale stärken, Dialog ermöglichen. Bleibt neugierig, kommt mit den Moerserinnen und Moersern ins Gespräch – und nehmt Ideen mit zurück an eure Einrichtungen. Wir freuen uns auf weitere Begegnungen am SCI!</p>
-        <h3>Well done!</h3>
-        <p>Brilliant – you found all places and solved every code. May these impressions stay with you: the quiet act of remembrance at the <b>Stolperstein</b>, the expansive view from the <b>Geleucht</b>, and the educational legacy shaped by figures like <b>Franz Ludwig Zahn</b>.</p>
-        <p>As visitors from <b>psychology</b> and <b>education</b>, you are part of this story: supporting people, strengthening potential and creating dialogue. Stay curious, meet the people of Moers and take fresh ideas back to your institutions. We’re looking forward to seeing you again at SCI!</p>
+        <h3>Well done – you reached the end of the Kolonie Quest</h3>
+        <p>Thank you for walking these paths, listening to voices from the past and present, and engaging with stories of forced labor, resistance, migration, celebration and everyday life in Moers and the Kolonie. Each stop connects individual fates, social movements and small gestures of solidarity.</p>
+        <p>As visitors from psychology and pedagogy, you bring your own perspectives on people, biography and participation. We hope this tour offered you impulses for reflection, for conversations with each other, and for encounters with the city. May the impressions travel with you into your work and your everyday life.</p>
+        <p>Enjoy the rest of your time at SCI Moers, stay curious, and feel invited to come back — to the Kolonie, to Moers, and to the people whose stories continue here.</p>
       `;
     }
 
-    /* ===== RÄTSEL-DEFINITION ===== */
+    /* STAGES CONFIG: 6 riddles with audio and info */
     const stages = [
-      { html: getRiddle1Intro,  answer: "1111", info: getRiddle1SolvedInfo },
-      { html: getRiddle2Intro,  answer: "2222", info: getRiddle2SolvedInfo },
-      { html: getRiddle3Intro,  answer: "3333", info: getRiddle3SolvedInfo } // Franz Ludwig Zahn: 10/98 -> 1098
+      {
+        html: getRiddle1Intro,
+        answer: "2510",
+        info: getRiddle1Info,
+        audio: "audio/riddle_1.mp3"
+      },
+      {
+        html: getRiddle2Intro,
+        answer: "1971",
+        info: getRiddle2Info,
+        audio: "audio/riddle_2.mp3"
+      },
+      {
+        html: getRiddle3Intro,
+        answer: "5555",
+        info: getRiddle3Info,
+        audio: "audio/riddle_3.mp3"
+      },
+      {
+        html: getRiddle4Intro,
+        answer: "243",
+        info: getRiddle4Info,
+        audio: "audio/riddle_4.mp3"
+      },
+      {
+        html: getRiddle5Intro,
+        answer: "1294",
+        info: getRiddle5Info,
+        audio: "audio/riddle_5.mp3"
+      },
+      {
+        html: getRiddle6Intro,
+        answer: "1900",
+        info: getRiddle6Info,
+        audio: "audio/riddle_6.mp3"
+      }
     ];
 
-    /* ===== ZOOM / PAN STATE (mit relativen Koordinaten) ===== */
+    /* AUDIO MANAGEMENT – global list for play/pause toggle */
+    let allAudioEntries = [];
+
+    function stopAllAudios(){
+      allAudioEntries.forEach(entry => {
+        try{
+          entry.audio.pause();
+          entry.button.textContent = entry.labelPlay;
+        }catch(e){}
+      });
+    }
+
+    function clearAllAudios(){
+      stopAllAudios();
+      allAudioEntries = [];
+    }
+
+    function registerAudio(audio, button, labelPlay, labelPause){
+      button.textContent = labelPlay;
+      allAudioEntries.push({ audio, button, labelPlay, labelPause });
+
+      button.onclick = () => {
+        if (audio.paused) {
+          // start this one, stop others
+          stopAllAudios();
+          audio.currentTime = 0;
+          audio.play();
+          button.textContent = labelPause;
+        } else {
+          audio.pause();
+          button.textContent = labelPlay;
+        }
+      };
+
+      audio.addEventListener('ended', () => {
+        button.textContent = labelPlay;
+      });
+    }
+
+    /* ZOOM / PAN STATE (relative focal point) */
     let s = 1, sMin = 1, sMax = 50;
     let tx = 0, ty = 0;
-    let u = 0.5, vTop = 0.5;   // relative Bildmitte (u=0..1, vTop=0..1)
+    let u = 0.5, vTop = 0.5;
+
     function getContainScale(){
       const iw = img.naturalWidth || 1, ih = img.naturalHeight || 1;
       const vw = mapWrap.clientWidth, vh = mapWrap.clientHeight;
@@ -381,7 +634,7 @@
       applyTransform();
     }
 
-    /* Startansicht für Bild 1: 300% + Fokus 75%/60% von unten */
+    /* Initial map view for first image (same as before) */
     const INITIAL_SCALE = 3.0;
     const FOCAL_U = 0.75;
     const FOCAL_V_TOP = 0.40;
@@ -391,7 +644,6 @@
       applyFromSU();
     }
 
-    /* Persistenz über Reiter/Bildwechsel */
     const STORAGE_KEY = "map_state_v3";
     function persistTransform(){ recomputeUV(); sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ s, u, vTop })); }
     function restoreTransform(){
@@ -408,7 +660,7 @@
     window.addEventListener('beforeunload', persistTransform);
     document.addEventListener('visibilitychange', ()=>{ if (document.hidden) persistTransform(); });
 
-    /* ===== BILD LADEN ===== */
+    /* IMAGE LOADING */
     function loadImage(url, { preserve=false } = {}){
       return new Promise((resolve)=>{
         img.onload = () => {
@@ -422,19 +674,32 @@
     }
 
     let current = 0;
+
     async function loadStage(i, {preserveTransform=false} = {}){
-      await loadImage(mapUrls[i], { preserve: preserveTransform });
-      title.textContent = 'Rätsel ' + (i + 1);
+      clearAllAudios(); // stop anything playing from previous riddle
+
+      const imgIndex = Math.min(i, mapUrls.length - 1);
+      await loadImage(mapUrls[imgIndex], { preserve: preserveTransform });
+
+      title.textContent = 'Riddle ' + (i + 1);
       riddleDiv.innerHTML = stages[i].html();
       result.textContent = '';
       code.value = '';
       answerRow.style.display = 'flex';
-      // Immer ganz nach oben, sobald der Text erscheint:
-      tabText.click(); // zeigt den Rätsel-Tab
+
+      // main riddle audio
+      const audioBtn = document.createElement("button");
+      audioBtn.className = "audio-btn";
+      const audio = new Audio(stages[i].audio);
+      registerAudio(audio, audioBtn, "Play riddle audio", "Pause riddle audio");
+      riddleDiv.prepend(audioBtn);
+
+
+      tabText.click();
       scrollTextTop();
     }
 
-    /* ===== START BUTTON ===== */
+    /* START BUTTON */
     startBtn.onclick = async ()=>{
       introPanel.style.display = 'none';
       topbar.classList.add('visible');
@@ -445,50 +710,68 @@
       tabMap.classList.add('active');
 
       await loadStage(0, { preserveTransform:false });
-      tabMap.click(); // Karte aktiv – Bild lädt mit Start-Zoom
+      tabMap.click();
     };
 
-    /* ===== PRÜFEN / CONTINUE ===== */
+    /* AFTER CORRECT CODE: show info + Continue */
     function showSolvedInfoAndNext(){
-      // Info-Block des jeweiligen Rätsels anzeigen
-      // Für Rätsel 3: eigener Info-Block, sonst allgemeiner
-      let infoHtml;
-      if (current === 2) infoHtml = getRiddle3SolvedInfo();
-      else infoHtml = stages[current].info();
+      clearAllAudios();
 
-      riddleDiv.innerHTML = infoHtml;
+      riddleDiv.innerHTML = stages[current].info();
+      
+// Insert Moorsoldaten song button ONLY in riddle 2 info screen
+        if (current === 1) {
+            const songBtn = document.createElement("button");
+            songBtn.className = "audio-btn";
+            const songAudio = new Audio("audio/moorsoldaten.mp3");
+            registerAudio(songAudio, songBtn, "Play song", "Pause song");
+
+  // Button zwischen Text und Bildern → ganz oben ins Infofeld einfügen
+        riddleDiv.insertBefore(songBtn, riddleDiv.firstChild.nextSibling);
+        }
+
+
       answerRow.style.display = 'none';
-      scrollTextTop(); // Info an der Oberkante beginnen
+      scrollTextTop();
 
-      const nextA = document.getElementById('nextBtn');
-      const go = async ()=>{
-        persistTransform();       // s,u,v sichern
+      const nextBtn = document.createElement("button");
+      nextBtn.className = "btn";
+      nextBtn.textContent = "Continue";
+      nextBtn.style.marginTop = "0.9rem";
+
+      riddleDiv.appendChild(nextBtn);
+
+      nextBtn.onclick = async () => {
+        persistTransform();
         current++;
         if (current < stages.length) {
-          await loadStage(current, {preserveTransform:true}); // Bildwechsel mit identischer Ansicht
-          tabMap.click(); // zurück zur Karte mit neuem Bild
+          await loadStage(current, {preserveTransform:true});
+          tabMap.click();
         } else {
-          // Finale Seite bleibt im Rätsel-Tab
-          title.textContent = 'Abschluss / Finish';
+          // final closing text
+          title.textContent = 'Finish';
           riddleDiv.innerHTML = getFinalText();
+          answerRow.style.display = 'none';
           scrollTextTop();
         }
       };
-      if (nextA) nextA.onclick = go;
     }
 
+    /* CHECK BUTTON */
     checkBtn.onclick = () => {
       const val = code.value.trim();
       if (val === stages[current].answer) {
-        result.textContent = '✔️ Richtig!'; result.className = 'ok';
+        result.textContent = '✔ Correct';
+        result.className = 'ok';
         showSolvedInfoAndNext();
       } else {
-        result.textContent = '❌ Falsch!'; result.className = 'error';
+        result.textContent = '✖ Wrong';
+        result.className = 'error';
       }
     };
     code.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ checkBtn.click(); } });
 
-    /* ===== TOUCH: Pinch & Pan ===== */
+    /* TOUCH: pinch & pan on map */
     const dist = (a,b)=>Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
     const mid  = (a,b)=>({ x:(a.clientX+b.clientX)/2, y:(a.clientY+b.clientY)/2 });
     let prevDist = 0, prevMid = null, panStart = null;
@@ -516,11 +799,9 @@
         const m = { x: mScr.x - (rect.left + rect.width/2), y: mScr.y - (rect.top + rect.height/2) };
         const d  = dist(e.touches[0], e.touches[1]);
 
-        // 1) Pan um Midpoint
         tx += (m.x - prevMid.x);
         ty += (m.y - prevMid.y);
 
-        // 2) Zoom um Midpoint
         const nextS = Math.min(sMax, Math.max(sMin, s * (d / prevDist || 1)));
         const k = nextS / s;
         tx = m.x - (m.x - tx) * k;
@@ -546,7 +827,6 @@
       } else {
         panStart = null; prevMid = null;
       }
-      // Double-Tap Zoom (nur wenn kurz zuvor kein Pinch)
       const now = Date.now();
       if (now - lastPinchEnd > 350 && now - lastTap < 300 && e.changedTouches.length === 1) {
         const rect = mapWrap.getBoundingClientRect();
@@ -562,14 +842,8 @@
       recomputeUV(); persistTransform();
     });
 
-    /* Resize/Orientierung: identische Ansicht erhalten */
     window.addEventListener('resize', ()=>{ applyFromSU(); persistTransform(); });
     window.addEventListener('orientationchange', ()=>{ applyFromSU(); persistTransform(); });
   </script>
 </body>
 </html>
-
-
-
-
-
