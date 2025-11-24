@@ -720,6 +720,11 @@
 
       riddleDiv.innerHTML = stages[current].info();
       
+      // Wenn wir in INFO von Riddle 6 sind → map auf 7.jpg umschalten
+      if (current === 5) {
+        loadImage("map/7.jpg", { preserve: false });
+      }
+
 // Insert Moorsoldaten song button ONLY in riddle 2 info screen
         if (current === 1) {
             const songBtn = document.createElement("button");
@@ -754,6 +759,10 @@
           riddleDiv.innerHTML = getFinalText();
           answerRow.style.display = 'none';
           scrollTextTop();
+          
+          // Im Finish die Map durch 7.jpg ersetzen
+          loadImage("map/7.jpg", { preserve: false });
+
         }
       };
     }
