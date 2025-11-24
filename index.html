@@ -338,7 +338,7 @@
         Listen closely — its echoes trace<br>
         The author’s spirit in this place,<br>
         Here in the Kolonie.<br>
-        Find the sign with his name on it.</p>
+        Find the sign with his name on it: Johann Esser</p>
       `;
     }
 
@@ -431,7 +431,7 @@
         When you arrive, a warming brew awaits —<br>
         A cup of hot wine to open winter’s gates.</p>
         <p>While you sip your glowing wine,<br>
-        Count the reindeer, Santas, and snowmen in line,<br>
+        Count the glowing reindeer, Santas, and presents in line,<br>
         And you will be ready, your heart in time,<br>
         To discover the secret of this rhyme.</p>
       `;
@@ -683,6 +683,18 @@
       registerAudio(audio, audioBtn, "Play riddle audio", "Pause riddle audio");
       riddleDiv.prepend(audioBtn);
 
+      // Extra: Song-Button auch auf der Rätselseite von Rätsel 2
+      if (i === 1) {
+        const songBtn2 = document.createElement("button");
+        songBtn2.className = "audio-btn";
+
+        const songAudio2 = new Audio("audio/moorsoldaten.mp3");
+
+        registerAudio(songAudio2, songBtn2, "Play song", "Pause song");
+
+        // Song-Button direkt unter dem Rätsel-Audio-Button einfügen
+        riddleDiv.insertBefore(songBtn2, audioBtn.nextSibling);
+      }
 
       tabText.click();
       scrollTextTop();
