@@ -143,8 +143,8 @@
     .ok{color:#0a8a2a}
     .error{color:#c40000}
 
-    /*  play/pause button */
-    .-btn{
+    /* Audio play/pause button */
+    .audio-btn{
       border:none;
       background:#4c66d1;
       color:#fff;
@@ -195,12 +195,12 @@
     <img id="introLogo" src="https://www.total-lokal.de/custom/image_files/photo_1493439.png" alt="SCI Logo" />
     <div class="intro-card">
       <h1>Welcome to the SCI Moers Kolonie Quest</h1>
-      <p>You are visiting SCI in Moers and exploring the Kolonie and its surroundings through short stories, traces of history and small riddles. The map shows locations linked to memory, everyday life and local culture. For each stop, you will hear a short  and read a riddle.</p>
+      <p>You are visiting SCI in Moers and exploring the Kolonie and its surroundings through short stories, traces of history and small riddles. The map shows locations linked to memory, everyday life and local culture. For each stop, you will hear a short audio and read a riddle.</p>
       <p>Every solution is a <b>numeric code</b>. After entering the correct code, more background information is revealed and you can continue to the next stop.</p>
       <h2>How it works</h2>
       <p>1. Tap <b>Start</b>.<br>
          2. Use the <b>Riddle</b> tab to read and listen, the <b>Map</b> tab to explore the location.<br>
-         3. Press the <b> buttons</b> to listen to each riddle (and, in one case, a song).<br>
+         3. Press the <b>audio buttons</b> to listen to each riddle (and, in one case, a song).<br>
          4. Enter the code, press <b>Check</b> and then <b>Continue</b> to move on.</p>
       <div class="intro-actions">
         <button id="startBtn" class="btn">Start</button>
@@ -504,81 +504,81 @@
       `;
     }
 
-    /* STAGES CONFIG: 6 riddles with  and info */
+    /* STAGES CONFIG: 6 riddles with audio and info */
     const stages = [
       {
         html: getRiddle1Intro,
         answer: "1925",
         info: getRiddle1Info,
-        : "/riddle_1.mp3"
+        audio: "audio/riddle_1.mp3"
       },
       {
         html: getRiddle2Intro,
         answer: "1971",
         info: getRiddle2Info,
-        : "/riddle_2.mp3"
+        audio: "audio/riddle_2.mp3"
       },
       {
         html: getRiddle3Intro,
         answer: "20",
         info: getRiddle3Info,
-        : "/riddle_3.mp3"
+        audio: "audio/riddle_3.mp3"
       },
       {
         html: getRiddle4Intro,
         answer: "1943",
         info: getRiddle4Info,
-        : "/riddle_4.mp3"
+        audio: "audio/riddle_4.mp3"
       },
       {
         html: getRiddle5Intro,
         answer: "1234",
         info: getRiddle5Info,
-        : "/riddle_5.mp3"
+        audio: "audio/riddle_5.mp3"
       },
       {
         html: getRiddle6Intro,
         answer: "1900",
         info: getRiddle6Info,
-        : "/riddle_6.mp3"
+        audio: "audio/riddle_6.mp3"
       }
     ];
 
-    /*  MANAGEMENT – global list for play/pause toggle */
-    let allEntries = [];
+    /* AUDIO MANAGEMENT – global list for play/pause toggle */
+    let allAudioEntries = [];
 
-    function stopAlls(){
-      allEntries.forEach(entry => {
+    function stopAllAudios(){
+      allAudioEntries.forEach(entry => {
         try{
-          entry..pause();
+          entry.audio.pause();
           entry.button.textContent = entry.labelPlay;
         }catch(e){}
       });
     }
 
-    function clearAlls(){
-      stopAlls();
-      allEntries = [];
+    function clearAllAudios(){
+      stopAllAudios();
+      allAudioEntries = [];
     }
 
-    function register(, button, labelPlay, labelPause){
+    function registerAudio(audio, button, labelPlay, labelPause){
       button.textContent = labelPlay;
-      allEntries.push({ , button, labelPlay, labelPause });
+      allAudioEntries.push({ audio, button, labelPlay, labelPause });
 
       button.onclick = () => {
-        if (.paused) {
+        if (audio.paused) {
           // start this one, stop others
-          stopAlls();
-          .currentTime = 0;
-          .play();
+          stopAllAudios();
+          audio.currentTime = 0;
+          audio.play();
           button.textContent = labelPause;
         } else {
-          .pause();
+          audio.pause();
           button.textContent = labelPlay;
         }
       };
 
-      .addEventListener('ended', () => {
+      audio.addEventListener('ended', () => {
         button.textContent = labelPlay;
       });
     }
@@ -665,7 +665,7 @@
     let current = 0;
 
     async function loadStage(i, {preserveTransform=false} = {}){
-      clearAlls(); // stop anything playing from previous riddle
+      clearAllAudios(); // stop anything playing from previous riddle
 
       const imgIndex = Math.min(i, mapUrls.length - 1);
       await loadImage(mapUrls[imgIndex], { preserve: preserveTransform });
@@ -682,17 +682,6 @@
       const audio = new Audio(stages[i].audio);
       registerAudio(audio, audioBtn, "Play riddle audio", "Pause riddle audio");
       riddleDiv.prepend(audioBtn);
-
-      // Extra song button on riddle 2 (index 1)
-      if (i === 1) {
-        const songBtn2 = document.createElement("button");
-        songBtn2.className = "audio-btn";
-        const songAudio2 = new Audio("audio/moorsoldaten.mp3");
-        registerAudio(songAudio2, songBtn2, "Play song", "Pause song");
-
-        // Direkt unter den Rätseltext (aber nach dem Rätsel-Audiobutton)
-        riddleDiv.insertBefore(songBtn2, audioBtn.nextSibling);
-      }
 
 
       tabText.click();
@@ -847,6 +836,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
