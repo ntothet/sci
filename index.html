@@ -1,317 +1,421 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <!-- Optimized for smartphones -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>SCI Moers – Kolonie Quest</title>
-  <style>
-    :root{
-      --topbar:56px;
-      --footer:56px;
-      --bg:#f7f8fc; --ink:#0a0a0a;
-      --bar:#182449; --tab:#30407a; --tab-active:#4c66d1;
-      --line:#cfd6ea;
-    }
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-      background:var(--bg);
-      color:var(--ink);
-    }
+  <head>
+    <meta charset="utf-8" />
+    <!-- Optimized for smartphones -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <title>SCI Moers – Kolonie Quest</title>
+    <style>
+      :root {
+        --topbar: 56px;
+        --footer: 56px;
+        --bg: #f7f8fc;
+        --ink: #0a0a0a;
+        --bar: #182449;
+        --tab: #30407a;
+        --tab-active: #4c66d1;
+        --line: #cfd6ea;
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
 
-    /* Intro (first screen) */
-    #introPanel{
-      min-height:100dvh;
-      padding:24px 16px 96px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
-      gap:16px;
-      background:#fff;
-    }
-    #introLogo{
-      height:56px;
-      margin:8px auto 4px;
-      display:block;
-    }
-    .intro-card{
-      width:100%;
-      max-width:720px;
-      background:#f9fbff;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:16px;
-    }
-    .intro-card h1{margin:.2rem 0 0.5rem; font-size:1.25rem;}
-    .intro-card h2{margin:1rem 0 .35rem; font-size:1rem; color:#273469}
-    .intro-card p{margin:.5rem 0; line-height:1.4}
-    .intro-actions{margin-top:12px; display:flex; justify-content:center}
-    .btn{
-      border:none;
-      border-radius:12px;
-      padding:.75rem 1.1rem;
-      background:#4c66d1;
-      color:#fff;
-      font-weight:700;
-    }
+      /* Intro (first screen) */
+      #introPanel {
+        min-height: 100dvh;
+        padding: 24px 16px 96px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 16px;
+        background: #fff;
+      }
+      #introLogo {
+        height: 56px;
+        margin: 8px auto 4px;
+        display: block;
+      }
+      .intro-card {
+        width: 100%;
+        max-width: 720px;
+        background: #f9fbff;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .intro-card h1 {
+        margin: 0.2rem 0 0.5rem;
+        font-size: 1.25rem;
+      }
+      .intro-card h2 {
+        margin: 1rem 0 0.35rem;
+        font-size: 1rem;
+        color: #273469;
+      }
+      .intro-card p {
+        margin: 0.5rem 0;
+        line-height: 1.4;
+      }
+      .intro-actions {
+        margin-top: 12px;
+        display: flex;
+        justify-content: center;
+      }
+      .btn {
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 1.1rem;
+        background: #4c66d1;
+        color: #fff;
+        font-weight: 700;
+      }
 
-    /* Top tabs */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:20;
-      display:none;
-      gap:.5rem;
-      align-items:center;
-      height:var(--topbar);
-      padding:.5rem;
-      background:var(--bar);
-    }
-    .topbar.visible{display:flex;}
-    .tab{
-      flex:1;
-      border:none;
-      border-radius:12px;
-      padding:.7rem 1rem;
-      background:var(--tab);
-      color:#e9eeff;
-      font-weight:700;
-    }
-    .tab.active{
-      background:var(--tab-active);
-      color:#fff;
-    }
+      /* Top tabs */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: none;
+        gap: 0.5rem;
+        align-items: center;
+        height: var(--topbar);
+        padding: 0.5rem;
+        background: var(--bar);
+      }
+      .topbar.visible {
+        display: flex;
+      }
+      .tab {
+        flex: 1;
+        border: none;
+        border-radius: 12px;
+        padding: 0.7rem 1rem;
+        background: var(--tab);
+        color: #e9eeff;
+        font-weight: 700;
+      }
+      .tab.active {
+        background: var(--tab-active);
+        color: #fff;
+      }
 
-    .panel{display:none}
-    .panel.active{display:block}
+      .panel {
+        display: none;
+      }
+      .panel.active {
+        display: block;
+      }
 
-    /* Map area */
-    .map-wrap{
-      position:relative;
-      height:calc(100dvh - var(--topbar) - var(--footer));
-      background:#fff;
-      overflow:hidden;
-      touch-action:none;
-      border-bottom:1px solid var(--line);
-    }
-    .map-inner{
-      position:absolute;
-      left:50%; top:50%;
-      transform:translate(-50%,-50%);
-      will-change:transform;
-    }
-    .map-img{
-      display:block;
-      width:auto;
-      height:auto;
-      user-select:none;
-      -webkit-user-drag:none;
-      pointer-events:none;
-      max-width:none;
-      max-height:none;
-      background:#eef2ff;
-    }
+      /* Map area */
+      .map-wrap {
+        position: relative;
+        height: calc(100dvh - var(--topbar) - var(--footer));
+        background: #fff;
+        overflow: hidden;
+        touch-action: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .map-inner {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        will-change: transform;
+      }
+      .map-img {
+        display: block;
+        width: auto;
+        height: auto;
+        user-select: none;
+        -webkit-user-drag: none;
+        pointer-events: none;
+        max-width: none;
+        max-height: none;
+        background: #eef2ff;
+      }
 
-    /* Riddle / text panel */
-    .pad{
-      padding:1rem;
-      padding-bottom:calc(var(--footer) + 24px); /* space so footer does not cover input */
-    }
-    .pad h2{margin:.25rem 0 .5rem}
-    input[type="text"]{
-      width:140px;
-      text-align:center;
-      border:1px solid #9aa0b4;
-      border-radius:10px;
-      padding:.65rem .75rem;
-      font-size:1.05rem;
-      background:#fff;
-    }
-    .btn-ghost{
-      border:1px solid #cfd6ea;
-      border-radius:10px;
-      padding:.55rem .9rem;
-      background:#fff;
-      color:#0b1c5a;
-      font-weight:700;
-    }
-    #result{font-weight:700;margin-left:.5rem}
-    .ok{color:#0a8a2a}
-    .error{color:#c40000}
+      /* Riddle / text panel */
+      .pad {
+        padding: 1rem;
+        padding-bottom: calc(
+          var(--footer) + 24px
+        ); /* space so footer does not cover input */
+      }
+      .pad h2 {
+        margin: 0.25rem 0 0.5rem;
+      }
+      input[type="text"] {
+        width: 140px;
+        text-align: center;
+        border: 1px solid #9aa0b4;
+        border-radius: 10px;
+        padding: 0.65rem 0.75rem;
+        font-size: 1.05rem;
+        background: #fff;
+      }
+      .btn-ghost {
+        border: 1px solid #cfd6ea;
+        border-radius: 10px;
+        padding: 0.55rem 0.9rem;
+        background: #fff;
+        color: #0b1c5a;
+        font-weight: 700;
+      }
+      #result {
+        font-weight: 700;
+        margin-left: 0.5rem;
+      }
+      .ok {
+        color: #0a8a2a;
+      }
+      .error {
+        color: #c40000;
+      }
 
-    /* Audio play/pause button */
-    .audio-btn{
-      border:none;
-      background:#4c66d1;
-      color:#fff;
-      padding:0.55rem 1rem;
-      border-radius:10px;
-      font-weight:700;
-      margin-bottom:0.4rem;
-      margin-right:0.4rem;
-    }
+      /* Audio play/pause button */
+      .audio-btn {
+        border: none;
+        background: #4c66d1;
+        color: #fff;
+        padding: 0.55rem 1rem;
+        border-radius: 10px;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+        margin-right: 0.4rem;
+      }
 
-    /* Info images full width */
-    .info-image{
-      width:100%;
-      height:auto;
-      display:block;
-      margin:8px 0 4px;
-      border-radius:10px;
-    }
-    .info-caption{
-      color:#5b647a;
-      display:block;
-      margin-bottom:12px;
-      font-size:0.85rem;
-    }
+      /* Info images full width */
+      .info-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 8px 0 4px;
+        border-radius: 10px;
+      }
+      .info-caption {
+        color: #5b647a;
+        display: block;
+        margin-bottom: 12px;
+        font-size: 0.85rem;
+      }
 
-    /* Footer with logo */
-    footer{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      height:var(--footer);
-      background:#fff;
-      border-top:1px solid var(--line);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:0 .75rem;
-    }
-    footer.visible{display:flex;}
-    footer img{height:34px; display:block}
+      /* Footer with logo */
+      footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--footer);
+        background: #fff;
+        border-top: 1px solid var(--line);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.75rem;
+      }
+      footer.visible {
+        display: flex;
+      }
+      footer img {
+        height: 34px;
+        display: block;
+      }
 
-    body, .map-wrap { overscroll-behavior:none; }
-  </style>
-</head>
-<body>
-
-  <!-- INTRO / START SCREEN -->
-  <section id="introPanel">
-    <img id="introLogo" src="https://www.total-lokal.de/custom/image_files/photo_1493439.png" alt="SCI Logo" />
-    <div class="intro-card">
-      <h1>Welcome to the SCI Moers Kolonie Quest</h1>
-      <p>You are visiting SCI in Moers and exploring the Kolonie and its surroundings through short stories, traces of history and small riddles. The map shows locations linked to memory, everyday life and local culture. For each stop, you will hear a short audio and read a riddle.</p>
-      <p>Every solution is a <b>numeric code</b>. After entering the correct code, more background information is revealed and you can continue to the next stop.</p>
-      <h2>How it works</h2>
-      <p>1. Tap <b>Start</b>.<br>
-         2. Use the <b>Riddle</b> tab to read and listen, the <b>Map</b> tab to explore the location.<br>
-         3. Press the <b>audio buttons</b> to listen to each riddle (and, in one case, a song).<br>
-         4. Enter the code, press <b>Check</b> and then <b>Continue</b> to move on.</p>
-      <div class="intro-actions">
-        <button id="startBtn" class="btn">Start</button>
+      body,
+      .map-wrap {
+        overscroll-behavior: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- INTRO / START SCREEN -->
+    <section id="introPanel">
+      <img
+        id="introLogo"
+        src="https://www.total-lokal.de/custom/image_files/photo_1493439.png"
+        alt="SCI Logo"
+      />
+      <div class="intro-card">
+        <h1>Welcome to the SCI Moers Kolonie Quest</h1>
+        <p>
+          You are visiting SCI in Moers and exploring the Kolonie and its
+          surroundings through short stories, traces of history and small
+          riddles. The map shows locations linked to memory, everyday life and
+          local culture. For each stop, you will hear a short audio and read a
+          riddle.
+        </p>
+        <p>
+          Every solution is a <b>numeric code</b>. After entering the correct
+          code, more background information is revealed and you can continue to
+          the next stop.
+        </p>
+        <h2>How it works</h2>
+        <p>
+          1. Tap <b>Start</b>.<br />
+          2. Use the <b>Riddle</b> tab to read and listen, the <b>Map</b> tab to
+          explore the location.<br />
+          3. Press the <b>audio buttons</b> to listen to each riddle (and, in
+          one case, a song).<br />
+          4. Enter the code, press <b>Check</b> and then <b>Continue</b> to move
+          on.
+        </p>
+        <div class="intro-actions">
+          <button id="startBtn" class="btn">Start</button>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Tabs -->
-  <header class="topbar" id="topbar">
-    <button id="tabMap" class="tab active">Map</button>
-    <button id="tabText" class="tab">Riddle</button>
-  </header>
+    <!-- Tabs -->
+    <header class="topbar" id="topbar">
+      <button id="tabMap" class="tab active">Map</button>
+      <button id="tabText" class="tab">Riddle</button>
+    </header>
 
-  <!-- Map panel -->
-  <section id="mapPanel" class="panel">
-    <div id="mapWrap" class="map-wrap">
-      <div id="mapInner" class="map-inner">
-        <img id="mapImage" class="map-img" alt="Map" />
+    <!-- Map panel -->
+    <section id="mapPanel" class="panel">
+      <div id="mapWrap" class="map-wrap">
+        <div id="mapInner" class="map-inner">
+          <img id="mapImage" class="map-img" alt="Map" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Riddle / content panel -->
-  <section id="textPanel" class="panel">
-    <div class="pad" id="pad">
-      <h2 id="title">Riddle 1</h2>
-      <div id="riddle"></div>
-      <div id="answerRow" style="margin-top:1rem;display:flex;gap:.5rem;align-items:center;">
-        <input id="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="____" />
-        <button class="btn-ghost" id="check">Check</button>
-        <span id="result" aria-live="polite"></span>
+    <!-- Riddle / content panel -->
+    <section id="textPanel" class="panel">
+      <div class="pad" id="pad">
+        <h2 id="title">Riddle 1</h2>
+        <div id="riddle"></div>
+        <div
+          id="answerRow"
+          style="
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+          "
+        >
+          <input
+            id="code"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="4"
+            placeholder="____"
+          />
+          <button class="btn-ghost" id="check">Check</button>
+          <span id="result" aria-live="polite"></span>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer id="footer">
-    <img src="https://www.total-lokal.de/custom/image_files/photo_1493439.png" alt="Logo" />
-  </footer>
+    <!-- Footer -->
+    <footer id="footer">
+      <img
+        src="https://www.total-lokal.de/custom/image_files/photo_1493439.png"
+        alt="Logo"
+      />
+    </footer>
 
-  <script>
-    /* ELEMENT REFERENCES */
-    const introPanel = document.getElementById('introPanel');
-    const startBtn   = document.getElementById('startBtn');
-    const topbar     = document.getElementById('topbar');
-    const footer     = document.getElementById('footer');
+    <script>
+      /* ELEMENT REFERENCES */
+      const introPanel = document.getElementById("introPanel");
+      const startBtn = document.getElementById("startBtn");
+      const topbar = document.getElementById("topbar");
+      const footer = document.getElementById("footer");
 
-    const tabMap   = document.getElementById('tabMap');
-    const tabText  = document.getElementById('tabText');
-    const mapPanel = document.getElementById('mapPanel');
-    const textPanel= document.getElementById('textPanel');
-    const pad      = document.getElementById('pad');
+      const tabMap = document.getElementById("tabMap");
+      const tabText = document.getElementById("tabText");
+      const mapPanel = document.getElementById("mapPanel");
+      const textPanel = document.getElementById("textPanel");
+      const pad = document.getElementById("pad");
 
-    const mapWrap  = document.getElementById('mapWrap');
-    const mapInner = document.getElementById('mapInner');
-    const img      = document.getElementById('mapImage');
+      const mapWrap = document.getElementById("mapWrap");
+      const mapInner = document.getElementById("mapInner");
+      const img = document.getElementById("mapImage");
 
-    const riddleDiv= document.getElementById('riddle');
-    const title    = document.getElementById('title');
-    const code     = document.getElementById('code');
-    const checkBtn = document.getElementById('check');
-    const result   = document.getElementById('result');
-    const answerRow= document.getElementById('answerRow');
+      const riddleDiv = document.getElementById("riddle");
+      const title = document.getElementById("title");
+      const code = document.getElementById("code");
+      const checkBtn = document.getElementById("check");
+      const result = document.getElementById("result");
+      const answerRow = document.getElementById("answerRow");
 
-    /* Scroll helper – always start text at the top */
-    function scrollTextTop(){
-      riddleDiv.scrollTop = 0;
-      pad.scrollTop = 0;
-      textPanel.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-      window.scrollTo({top: 0, left: 0, behavior: 'auto'});
-    }
+      /* Scroll helper – always start text at the top */
+      function scrollTextTop() {
+        riddleDiv.scrollTop = 0;
+        pad.scrollTop = 0;
+        textPanel.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
 
-    /* Tabs */
-    tabMap.onclick = () => {
-      tabMap.classList.add('active'); tabText.classList.remove('active');
-      mapPanel.classList.add('active'); textPanel.classList.remove('active');
-      restoreTransform(); applyFromSU();
-    };
-    tabText.onclick = () => {
-      tabText.classList.add('active'); tabMap.classList.remove('active');
-      textPanel.classList.add('active'); mapPanel.classList.remove('active');
-      persistTransform();
-      scrollTextTop();
-    };
+      /* Tabs */
+      tabMap.onclick = () => {
+        tabMap.classList.add("active");
+        tabText.classList.remove("active");
+        mapPanel.classList.add("active");
+        textPanel.classList.remove("active");
+        restoreTransform();
+        applyFromSU();
+      };
+      tabText.onclick = () => {
+        tabText.classList.add("active");
+        tabMap.classList.remove("active");
+        textPanel.classList.add("active");
+        mapPanel.classList.remove("active");
+        persistTransform();
+        scrollTextTop();
+      };
 
-    /* Map images (old images kept for now) */
-    const MAP1 = "map/1.jpg";
-    const MAP2 = "map/2.jpg";
-    const MAP3 = "map/3.jpg";
-    const MAP4 = "map/4.jpg";
-    const MAP5 = "map/5.jpg";
-    const MAP6 = "map/6.jpg";
-    
-    const mapUrls = [MAP1, MAP2, MAP3, MAP4, MAP5, MAP6];
+      /* Map images (old images kept for now) */
+      const MAP1 = "map/1.jpg";
+      const MAP2 = "map/2.jpg";
+      const MAP3 = "map/3.jpg";
+      const MAP4 = "map/4.jpg";
+      const MAP5 = "map/5.jpg";
+      const MAP6 = "map/6.jpg";
 
-    /* --------- RIDDLE TEXTS & INFO (all English, German names unchanged) --------- */
+      const mapUrls = [MAP1, MAP2, MAP3, MAP4, MAP5, MAP6];
 
-    function getRiddle1Intro(){
-      return `
+      /* --------- RIDDLE TEXTS & INFO (all English, German names unchanged) --------- */
+
+      function getFinalText() {
+        return `
+        <h3>Well done – you reached the end of the Kolonie Quest</h3>
+        <p>Thank you for walking these paths, listening to voices from the past and present, and engaging with stories of forced labor, resistance, migration, celebration and everyday life in Moers and the Kolonie. Each stop connects individual fates, social movements and small gestures of solidarity.</p>
+        <p>As visitors from psychology and pedagogy, you bring your own perspectives on people, biography and participation. We hope this tour offered you impulses for reflection, for conversations with each other, and for encounters with the city. May the impressions travel with you into your work and your everyday life.</p>
+        <p>Enjoy the rest of your time at SCI Moers, stay curious, and feel invited to come back — to the Kolonie, to Moers, and to the people whose stories continue here.</p>
+      `;
+      }
+
+      /* STAGES CONFIG: 6 riddles with audio and info */
+      const stages = [
+        {
+          intro: `
         <p>There was a time of blood and death,<br>
         When people were captured, forced to work to their final breath.<br>
         They still lie here, in the Kolonie,<br>
         Beneath small stones upon the meadow ground.<br>
         The youngest of them holds the code —<br>
         Seek it to learn more, and find the next location.</p>
-      `;
-    }
-
-    function getRiddle1Info(){
-      return `
+      `,
+          answer: "1925",
+          info: `
         <h3>Background – Prisoners of war and forced laborers</h3>
         <p>Prisoners of war and forced laborers replaced, between 1941 and 1945, in factories, on farms, and in households, the soldiers who had been sent to the front and the personnel who had been withdrawn for war service. Their number, as of March 31, 1943, amounted to 19,341 in the Moers–Geldern employment district — a quarter of all workers.</p>
         <p>In the former district of Moers, there were at least 141 camps, the most brutal of which were the two concentration camp–like camps of the Friedrich Heinrich coal mine in Kamp-Lintfort. Responsible for the “deployment of Russians” (Russeneinsatz) throughout the Ruhr mining industry, since 1942, was Heinrich Kost, the general director of the mine here in Moers Meerbeck-Hochstraß.</p>
@@ -322,11 +426,11 @@
 
         <img src="pictures/riddle_1_2.jpg" alt="Russian forced labourer" class="info-image" />
         <small class="info-caption">A Russian forced labourer in the region.</small>
-      `;
-    }
-
-    function getRiddle2Intro(){
-      return `
+      `,
+          audio: "audio/riddle_1.mp3",
+        },
+        {
+          intro: `
         <p>There was resistance in the Kolonie here,<br>
         The miners defied the fascist spear.<br>
         Beneath the soil, they shared their food;<br>
@@ -339,11 +443,9 @@
         The author’s spirit in this place,<br>
         Here in the Kolonie.<br>
         Find the sign with his name on it: Johann Esser</p>
-      `;
-    }
-
-    function getRiddle2Info(){
-      return `
+      `,
+          answer: "1971",
+          info: `
         <h3>Background – Resistance “Courageous Meerbeck”</h3>
         <p>Miners and industrial workers in the southern part of the former Moers district showed a resistance to Nazi rule that was both courageous and widespread. In the 1990s, this resistance could still be documented — together with some of those involved or their families.</p>
         <p>However, with the arrests of 1933–1935 and the trials of 1936, this uprising against the fascist dictatorship was largely crushed throughout the Moers district. Larger organized actions — such as those of the Social Democratic “bread deliverers” or of the Moers–Rheinhausen communists around Johann Esser — were no longer seen in the later years of the war.</p>
@@ -355,11 +457,11 @@
 
         <img src="pictures/riddle_2_2.jpg" alt="Johann Esser" class="info-image" />
         <small class="info-caption">Johann Esser, communist from Moers-Oestrum and author of the “Song of the Moor Soldiers”.</small>
-      `;
-    }
-
-    function getRiddle3Intro(){
-      return `
+      `,
+          audio: "audio/riddle_2.mp3",
+        },
+        {
+          intro: `
         <p>A stone-cast sign of cultural diversity,<br>
         its migrant stories carried here.<br>
         Once Moers was mostly Protestant —<br>
@@ -371,11 +473,9 @@
         <p>From the place where the sound is born<br>
         you’ll find small hollows in the stone —<br>
         count them, and you’ll know the rest.</p>
-      `;
-    }
-
-    function getRiddle3Info(){
-      return `
+      `,
+          answer: "20",
+          info: `
         <h3>Background – The Kolonie Meerbeck-Hochstraß</h3>
         <p>With the sinking of the Rheinpreußen shafts IV in Hochstraß and V in Utfort in 1900, the settlement of Meerbeck-Hochstraß was designed on the drawing board. Construction of the “colony” — today one of the most beautiful mining settlements in Germany — began in March 1904, parallel to the start of coal production. Instead of the tenement blocks previously common in the Ruhr region, planners here followed the model of the English garden cities, designing various types of “living-kitchen houses” with separate entrances, kitchen gardens on the inside, and tree-lined streets, along with the possibility of keeping a goat or a pig. The rental contracts were tied to employment at the mine.</p>
         <p>People came from across the German Empire, including Upper Silesia and the Ruhr area, as well as Slovenes, German-Austrians, Bohemians and Czechs, Hungarians, and Poles. This mixture of peoples got along well; the hardship faced by workers’ families forced solidarity and mutual aid. Associations helped strengthen community bonds. By the outbreak of the First World War, churches and schools, sports facilities, and cooperative stores had been built for roughly 10,000 newcomers — many of them Catholics.</p>
@@ -384,11 +484,11 @@
 
         <img src="pictures/riddle_3_1.jpg" alt="Miners setting a friction prop around 1950" class="info-image" />
         <small class="info-caption">Miners setting a friction prop, around 1950 – scenes like this shaped everyday life for many families in the Kolonie.</small>
-      `;
-    }
-
-    function getRiddle4Intro(){
-      return `
+      `,
+          audio: "audio/riddle_3.mp3",
+        },
+        {
+          intro: `
         <p>The time of Nazism was dark and cold;<br>
         It cut away morality, left hearts controlled.<br>
         So many people perished then —<br>
@@ -403,11 +503,9 @@
         And next to it five stones lie sealed.<br>
         What binds them together reveals the key —<br>
         A quiet truth of memory.</p>
-      `;
-    }
-
-    function getRiddle4Info(){
-      return `
+      `,
+          answer: "1943",
+          info: `
         <h3>Background – The Leiss an Christen family</h3>
         <p>The Leiss an Christen family, a mining family from Moers of Polish descent, was executed in February 1943 in the Sachsenhausen concentration camp near Oranienburg on the explicit orders of Reichsführer-SS Heinrich Himmler, because a son of the family had allegedly defected during the Battle of Stalingrad. The annihilation of this family took place under the so-called principle of Sippenhaft (kin liability). Introduced by the National Socialists in 1933 as a repressive measure against relatives of opponents of the regime, the Nazis now applied the instrument of Sippenhaft to the families of deserters and defectors. It was intended as a deterrent at a time when the capitulation of the German 6th Army at Stalingrad marked a turning point to the disadvantage of Nazi rule in the Second World War.</p>
         <p>After being arrested by the Gestapo in Moers, the entire family — including the three-year-old Marianne Leiss and two heavily pregnant women — was deported to the Sachsenhausen concentration camp and murdered there. As a deterrent, the Nazi press reported nationwide on this criminal act under the headline “Polish Traitor Family Neutralized”. The memorial stele commemorates the fate of the family and bears the title “Torn from the World”.</p>
@@ -417,11 +515,11 @@
 
         <img src="pictures/riddle_4_2.jpg" alt="Stolpersteine for Theodora and Marianne Leiss" class="info-image" />
         <small class="info-caption">Stolpersteine for the murdered Theodora and Marianne Leiss. Marianne was only two years old when she was killed.</small>
-      `;
-    }
-
-    function getRiddle5Intro(){
-      return `
+      `,
+          audio: "audio/riddle_4.mp3",
+        },
+        {
+          intro: `
         <p>The Kolonie holds a magical place,<br>
         Where one of the greatest stories<br>
         Is celebrated with lights and glories,<br>
@@ -434,11 +532,9 @@
         Count the glowing reindeer, Santas, and presents in line,<br>
         And you will be ready, your heart in time,<br>
         To discover the secret of this rhyme.</p>
-      `;
-    }
-
-    function getRiddle5Info(){
-      return `
+      `,
+          answer: "1234",
+          info: `
         <h3>Background – The Moers Christmas House</h3>
         <p>The Moers Christmas House is a privately run project that is carried out in free time. The house is located in Moers at Moselstraße 12 m (left).</p>
         <p>The decorations and lighting are in the garden and courtyard behind the house. Visitors are therefore asked to ring the doorbell at the Scheepers family, Moselstraße 12 m (left), or to use the side entrance (illuminated tree and lit gate arch) at Moselstraße 10 g. “We wish everyone a wonderful Christmas season and look forward to your visit. Hot mulled wine and other hot or cold drinks are also available.”</p>
@@ -446,11 +542,11 @@
 
         <img src="pictures/riddle_5_1.jpg" alt="Moers Christmas House" class="info-image" />
         <small class="info-caption">The Moers Christmas House with thousands of lights, music and hot drinks – a seasonal highlight in the Kolonie.</small>
-      `;
-    }
-
-    function getRiddle6Intro(){
-      return `
+      `,
+          audio: "audio/riddle_5.mp3",
+        },
+        {
+          intro: `
         <p>Where morning slowly finds the street,<br>
         a little booth stands, warm and neat.<br>
         Its window glows before the sun,<br>
@@ -467,11 +563,9 @@
         and on the bottom of its paper sheet,<br>
         you’ll find the path to the final shelter,<br>
         guiding you safe through every welter.</p>
-      `;
-    }
-
-    function getRiddle6Info(){
-      return `
+      `,
+          answer: "1900",
+          info: `
         <h3>Dinner Time &amp; Kiosk Culture</h3>
         <p><b>Dinner Time → Go to: Zum Bollwerk 107, 47441 Moers</b></p>
         <p>And while you walk, here’s some info on “Kiosk” in Germany:</p>
@@ -492,386 +586,408 @@
 
         <img src="pictures/riddle_6_2.jpg" alt="Kiosk in Duisburg" class="info-image" />
         <small class="info-caption">A kiosk in Duisburg – kiosks remain important social meeting points across the Ruhr region.</small>
-      `;
-    }
+      `,
+          audio: "audio/riddle_6.mp3",
+        },
+      ];
 
-    function getFinalText(){
-      return `
-        <h3>Well done – you reached the end of the Kolonie Quest</h3>
-        <p>Thank you for walking these paths, listening to voices from the past and present, and engaging with stories of forced labor, resistance, migration, celebration and everyday life in Moers and the Kolonie. Each stop connects individual fates, social movements and small gestures of solidarity.</p>
-        <p>As visitors from psychology and pedagogy, you bring your own perspectives on people, biography and participation. We hope this tour offered you impulses for reflection, for conversations with each other, and for encounters with the city. May the impressions travel with you into your work and your everyday life.</p>
-        <p>Enjoy the rest of your time at SCI Moers, stay curious, and feel invited to come back — to the Kolonie, to Moers, and to the people whose stories continue here.</p>
-      `;
-    }
+      /* AUDIO MANAGEMENT – global list for play/pause toggle */
+      let allAudioEntries = [];
 
-    /* STAGES CONFIG: 6 riddles with audio and info */
-    const stages = [
-      {
-        html: getRiddle1Intro,
-        answer: "1925",
-        info: getRiddle1Info,
-        audio: "audio/riddle_1.mp3"
-      },
-      {
-        html: getRiddle2Intro,
-        answer: "1971",
-        info: getRiddle2Info,
-        audio: "audio/riddle_2.mp3"
-      },
-      {
-        html: getRiddle3Intro,
-        answer: "20",
-        info: getRiddle3Info,
-        audio: "audio/riddle_3.mp3"
-      },
-      {
-        html: getRiddle4Intro,
-        answer: "1943",
-        info: getRiddle4Info,
-        audio: "audio/riddle_4.mp3"
-      },
-      {
-        html: getRiddle5Intro,
-        answer: "1234",
-        info: getRiddle5Info,
-        audio: "audio/riddle_5.mp3"
-      },
-      {
-        html: getRiddle6Intro,
-        answer: "1900",
-        info: getRiddle6Info,
-        audio: "audio/riddle_6.mp3"
+      function stopAllAudios() {
+        allAudioEntries.forEach((entry) => {
+          try {
+            entry.audio.pause();
+            entry.button.textContent = entry.labelPlay;
+          } catch (e) {}
+        });
       }
-    ];
 
-    /* AUDIO MANAGEMENT – global list for play/pause toggle */
-    let allAudioEntries = [];
+      function clearAllAudios() {
+        stopAllAudios();
+        allAudioEntries = [];
+      }
 
-    function stopAllAudios(){
-      allAudioEntries.forEach(entry => {
-        try{
-          entry.audio.pause();
-          entry.button.textContent = entry.labelPlay;
-        }catch(e){}
-      });
-    }
-
-    function clearAllAudios(){
-      stopAllAudios();
-      allAudioEntries = [];
-    }
-
-    function registerAudio(audio, button, labelPlay, labelPause){
-      button.textContent = labelPlay;
-      allAudioEntries.push({ audio, button, labelPlay, labelPause });
-
-      button.onclick = () => {
-        if (audio.paused) {
-          // start this one, stop others
-          stopAllAudios();
-          audio.currentTime = 0;
-          audio.play();
-          button.textContent = labelPause;
-        } else {
-          audio.pause();
-          button.textContent = labelPlay;
-        }
-      };
-
-      audio.addEventListener('ended', () => {
+      function registerAudio(audio, button, labelPlay, labelPause) {
         button.textContent = labelPlay;
-      });
-    }
+        allAudioEntries.push({ audio, button, labelPlay, labelPause });
 
-    /* ZOOM / PAN STATE (relative focal point) */
-    let s = 1, sMin = 1, sMax = 50;
-    let tx = 0, ty = 0;
-    let u = 0.5, vTop = 0.5;
-
-    function getContainScale(){
-      const iw = img.naturalWidth || 1, ih = img.naturalHeight || 1;
-      const vw = mapWrap.clientWidth, vh = mapWrap.clientHeight;
-      return Math.min(vw/iw, vh/ih);
-    }
-    function getDisplaySize(){
-      const base = getContainScale();
-      const iw = img.naturalWidth || 1, ih = img.naturalHeight || 1;
-      return { w: iw * base * s, h: ih * base * s, vw: mapWrap.clientWidth, vh: mapWrap.clientHeight, base };
-    }
-    function clampPan(){
-      const { w, h, vw, vh } = getDisplaySize();
-      const maxX = Math.max(0, (w - vw)/2);
-      const maxY = Math.max(0, (h - vh)/2);
-      tx = Math.max(-maxX, Math.min(maxX, tx));
-      ty = Math.max(-maxY, Math.min(maxY, ty));
-    }
-    function applyTransform(){
-      const { w, h } = getDisplaySize();
-      img.style.width  = w + 'px';
-      img.style.height = h + 'px';
-      clampPan();
-      mapInner.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`;
-    }
-    function recomputeUV(){
-      const { w, h } = getDisplaySize();
-      if (w>0 && h>0){ u = 0.5 - (tx / w); vTop = 0.5 - (ty / h); }
-    }
-    function applyFromSU(){
-      const { w, h } = getDisplaySize();
-      tx = (0.5 - u) * w;
-      ty = (0.5 - vTop) * h;
-      applyTransform();
-    }
-
-    /* Initial map view for first image (same as before) */
-    const INITIAL_SCALE = 2.5;
-    const FOCAL_U = 0.45;
-    const FOCAL_V_TOP = 0.35;
-    function setInitialViewOnImage(){
-      s = Math.max(sMin, Math.min(sMax, INITIAL_SCALE));
-      u = FOCAL_U; vTop = FOCAL_V_TOP;
-      applyFromSU();
-    }
-
-    const STORAGE_KEY = "map_state_v3";
-    function persistTransform(){ recomputeUV(); sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ s, u, vTop })); }
-    function restoreTransform(){
-      const raw = sessionStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      try{
-        const saved = JSON.parse(raw);
-        if (typeof saved.s === "number") s = Math.max(sMin, Math.min(sMax, saved.s));
-        if (typeof saved.u === "number") u = Math.min(1, Math.max(0, saved.u));
-        if (typeof saved.vTop === "number") vTop = Math.min(1, Math.max(0, saved.vTop));
-      }catch{}
-    }
-
-    window.addEventListener('beforeunload', persistTransform);
-    document.addEventListener('visibilitychange', ()=>{ if (document.hidden) persistTransform(); });
-
-    /* IMAGE LOADING */
-    function loadImage(url, { preserve=false } = {}){
-      return new Promise((resolve)=>{
-        img.onload = () => {
-          if (!preserve) { setInitialViewOnImage(); }
-          else { applyFromSU(); }
-          resolve(true);
+        button.onclick = () => {
+          if (audio.paused) {
+            // start this one, stop others
+            stopAllAudios();
+            audio.currentTime = 0;
+            audio.play();
+            button.textContent = labelPause;
+          } else {
+            audio.pause();
+            button.textContent = labelPlay;
+          }
         };
-        img.onerror = () => resolve(false);
-        img.src = url + (url.includes('?') ? '&' : '?') + 'cb=' + Date.now();
+
+        audio.addEventListener("ended", () => {
+          button.textContent = labelPlay;
+        });
+      }
+
+      /* ZOOM / PAN STATE (relative focal point) */
+      let s = 1,
+        sMin = 1,
+        sMax = 50;
+      let tx = 0,
+        ty = 0;
+      let u = 0.5,
+        vTop = 0.5;
+
+      function getContainScale() {
+        const iw = img.naturalWidth || 1,
+          ih = img.naturalHeight || 1;
+        const vw = mapWrap.clientWidth,
+          vh = mapWrap.clientHeight;
+        return Math.min(vw / iw, vh / ih);
+      }
+      function getDisplaySize() {
+        const base = getContainScale();
+        const iw = img.naturalWidth || 1,
+          ih = img.naturalHeight || 1;
+        return {
+          w: iw * base * s,
+          h: ih * base * s,
+          vw: mapWrap.clientWidth,
+          vh: mapWrap.clientHeight,
+          base,
+        };
+      }
+      function clampPan() {
+        const { w, h, vw, vh } = getDisplaySize();
+        const maxX = Math.max(0, (w - vw) / 2);
+        const maxY = Math.max(0, (h - vh) / 2);
+        tx = Math.max(-maxX, Math.min(maxX, tx));
+        ty = Math.max(-maxY, Math.min(maxY, ty));
+      }
+      function applyTransform() {
+        const { w, h } = getDisplaySize();
+        img.style.width = w + "px";
+        img.style.height = h + "px";
+        clampPan();
+        mapInner.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px))`;
+      }
+      function recomputeUV() {
+        const { w, h } = getDisplaySize();
+        if (w > 0 && h > 0) {
+          u = 0.5 - tx / w;
+          vTop = 0.5 - ty / h;
+        }
+      }
+      function applyFromSU() {
+        const { w, h } = getDisplaySize();
+        tx = (0.5 - u) * w;
+        ty = (0.5 - vTop) * h;
+        applyTransform();
+      }
+
+      /* Initial map view for first image (same as before) */
+      const INITIAL_SCALE = 2.5;
+      const FOCAL_U = 0.45;
+      const FOCAL_V_TOP = 0.35;
+      function setInitialViewOnImage() {
+        s = Math.max(sMin, Math.min(sMax, INITIAL_SCALE));
+        u = FOCAL_U;
+        vTop = FOCAL_V_TOP;
+        applyFromSU();
+      }
+
+      const STORAGE_KEY = "map_state_v3";
+      function persistTransform() {
+        recomputeUV();
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ s, u, vTop }));
+      }
+      function restoreTransform() {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        try {
+          const saved = JSON.parse(raw);
+          if (typeof saved.s === "number")
+            s = Math.max(sMin, Math.min(sMax, saved.s));
+          if (typeof saved.u === "number")
+            u = Math.min(1, Math.max(0, saved.u));
+          if (typeof saved.vTop === "number")
+            vTop = Math.min(1, Math.max(0, saved.vTop));
+        } catch {}
+      }
+
+      window.addEventListener("beforeunload", persistTransform);
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) persistTransform();
       });
-    }
 
-    let current = 0;
-
-    async function loadStage(i, {preserveTransform=false} = {}){
-      clearAllAudios(); // stop anything playing from previous riddle
-
-      const imgIndex = Math.min(i, mapUrls.length - 1);
-      await loadImage(mapUrls[imgIndex], { preserve: preserveTransform });
-
-      title.textContent = 'Riddle ' + (i + 1);
-      riddleDiv.innerHTML = stages[i].html();
-      result.textContent = '';
-      code.value = '';
-      answerRow.style.display = 'flex';
-
-      // main riddle audio
-      const audioBtn = document.createElement("button");
-      audioBtn.className = "audio-btn";
-      const audio = new Audio(stages[i].audio);
-      registerAudio(audio, audioBtn, "Play riddle audio", "Pause riddle audio");
-      riddleDiv.prepend(audioBtn);
-
-      // Extra: Song-Button auch auf der Rätselseite von Rätsel 2
-      if (i === 1) {
-        const songBtn2 = document.createElement("button");
-        songBtn2.className = "audio-btn";
-
-        const songAudio2 = new Audio("audio/moorsoldaten.mp3");
-
-        registerAudio(songAudio2, songBtn2, "Play song", "Pause song");
-
-        // Song-Button direkt unter dem Rätsel-Audio-Button einfügen
-        riddleDiv.insertBefore(songBtn2, audioBtn.nextSibling);
+      /* IMAGE LOADING */
+      function loadImage(url, { preserve = false } = {}) {
+        return new Promise((resolve) => {
+          img.onload = () => {
+            if (!preserve) {
+              setInitialViewOnImage();
+            } else {
+              applyFromSU();
+            }
+            resolve(true);
+          };
+          img.onerror = () => resolve(false);
+          img.src = url + (url.includes("?") ? "&" : "?") + "cb=" + Date.now();
+        });
       }
 
-      tabText.click();
-      scrollTextTop();
-    }
+      let current = 0;
 
-    /* START BUTTON */
-    startBtn.onclick = async ()=>{
-      introPanel.style.display = 'none';
-      topbar.classList.add('visible');
-      footer.classList.add('visible');
+      async function loadStage(i, { preserveTransform = false } = {}) {
+        clearAllAudios(); // stop anything playing from previous riddle
 
-      mapPanel.classList.add('active');
-      textPanel.classList.add('active');
-      tabMap.classList.add('active');
+        const imgIndex = Math.min(i, mapUrls.length - 1);
+        await loadImage(mapUrls[imgIndex], { preserve: preserveTransform });
 
-      await loadStage(0, { preserveTransform:false });
-      tabMap.click();
-    };
+        title.textContent = "Riddle " + (i + 1);
+        riddleDiv.innerHTML = stages[i].intro;
+        result.textContent = "";
+        code.value = "";
+        answerRow.style.display = "flex";
 
-    /* AFTER CORRECT CODE: show info + Continue */
-    function showSolvedInfoAndNext(){
-      clearAllAudios();
+        // main riddle audio
+        const audioBtn = document.createElement("button");
+        audioBtn.className = "audio-btn";
+        const audio = new Audio(stages[i].audio);
+        registerAudio(
+          audio,
+          audioBtn,
+          "Play riddle audio",
+          "Pause riddle audio"
+        );
+        riddleDiv.prepend(audioBtn);
 
-      riddleDiv.innerHTML = stages[current].info();
-      
-      // Wenn wir in INFO von Riddle 6 sind → map auf 7.jpg umschalten
-      if (current === 5) {
-        loadImage("map/7.jpg", { preserve: false });
-      }
+        // Extra: Song-Button auch auf der Rätselseite von Rätsel 2
+        if (i === 1) {
+          const songBtn2 = document.createElement("button");
+          songBtn2.className = "audio-btn";
 
-// Insert Moorsoldaten song button ONLY in riddle 2 info screen
-        if (current === 1) {
-            const songBtn = document.createElement("button");
-            songBtn.className = "audio-btn";
-            const songAudio = new Audio("audio/moorsoldaten.mp3");
-            registerAudio(songAudio, songBtn, "Play song", "Pause song");
+          const songAudio2 = new Audio("audio/moorsoldaten.mp3");
 
-  // Button zwischen Text und Bildern → ganz oben ins Infofeld einfügen
-        riddleDiv.insertBefore(songBtn, riddleDiv.firstChild.nextSibling);
+          registerAudio(songAudio2, songBtn2, "Play song", "Pause song");
+
+          // Song-Button direkt unter dem Rätsel-Audio-Button einfügen
+          riddleDiv.insertBefore(songBtn2, audioBtn.nextSibling);
         }
 
+        tabText.click();
+        scrollTextTop();
+      }
 
-      answerRow.style.display = 'none';
-      scrollTextTop();
+      /* START BUTTON */
+      startBtn.onclick = async () => {
+        introPanel.style.display = "none";
+        topbar.classList.add("visible");
+        footer.classList.add("visible");
 
-      const nextBtn = document.createElement("button");
-      nextBtn.className = "btn";
-      nextBtn.textContent = "Continue";
-      nextBtn.style.marginTop = "0.9rem";
+        mapPanel.classList.add("active");
+        textPanel.classList.add("active");
+        tabMap.classList.add("active");
 
-      riddleDiv.appendChild(nextBtn);
+        await loadStage(0, { preserveTransform: false });
+        tabMap.click();
+      };
 
-      nextBtn.onclick = async () => {
-        persistTransform();
-        current++;
-        if (current < stages.length) {
-          await loadStage(current, {preserveTransform:true});
-          tabMap.click();
-        } else {
-          // final closing text
-          title.textContent = 'Finish';
-          riddleDiv.innerHTML = getFinalText();
-          answerRow.style.display = 'none';
-          scrollTextTop();
-          
-          // Im Finish die Map durch 7.jpg ersetzen
+      /* AFTER CORRECT CODE: show info + Continue */
+      function showSolvedInfoAndNext() {
+        clearAllAudios();
+
+        riddleDiv.innerHTML = stages[current].info;
+
+        // Wenn wir in INFO von Riddle 6 sind → map auf 7.jpg umschalten
+        if (current === 5) {
           loadImage("map/7.jpg", { preserve: false });
+        }
 
+        // Insert Moorsoldaten song button ONLY in riddle 2 info screen
+        if (current === 1) {
+          const songBtn = document.createElement("button");
+          songBtn.className = "audio-btn";
+          const songAudio = new Audio("audio/moorsoldaten.mp3");
+          registerAudio(songAudio, songBtn, "Play song", "Pause song");
+
+          // Button zwischen Text und Bildern → ganz oben ins Infofeld einfügen
+          riddleDiv.insertBefore(songBtn, riddleDiv.firstChild.nextSibling);
+        }
+
+        answerRow.style.display = "none";
+        scrollTextTop();
+
+        const nextBtn = document.createElement("button");
+        nextBtn.className = "btn";
+        nextBtn.textContent = "Continue";
+        nextBtn.style.marginTop = "0.9rem";
+
+        riddleDiv.appendChild(nextBtn);
+
+        let working = false;
+        nextBtn.onclick = async () => {
+          if (working) return;
+          working = true;
+          persistTransform();
+          current++;
+          if (current < stages.length) {
+            await loadStage(current, { preserveTransform: true });
+            tabMap.click();
+          } else {
+            // final closing text
+            title.textContent = "Finish";
+            riddleDiv.innerHTML = getFinalText();
+            answerRow.style.display = "none";
+            scrollTextTop();
+
+            // Im Finish die Map durch 7.jpg ersetzen
+            loadImage("map/7.jpg", { preserve: false });
+          }
+          working = false;
+        };
+      }
+
+      /* CHECK BUTTON */
+      checkBtn.onclick = () => {
+        const val = code.value.trim();
+        if (val === stages[current].answer) {
+          result.textContent = "✔ Correct";
+          result.className = "ok";
+          showSolvedInfoAndNext();
+        } else {
+          result.textContent = "✖ Wrong";
+          result.className = "error";
         }
       };
-    }
+      code.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          checkBtn.click();
+        }
+      });
 
-    /* CHECK BUTTON */
-    checkBtn.onclick = () => {
-      const val = code.value.trim();
-      if (val === stages[current].answer) {
-        result.textContent = '✔ Correct';
-        result.className = 'ok';
-        showSolvedInfoAndNext();
-      } else {
-        result.textContent = '✖ Wrong';
-        result.className = 'error';
-      }
-    };
-    code.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ checkBtn.click(); } });
+      /* TOUCH: pinch & pan on map */
+      const dist = (a, b) =>
+        Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+      const mid = (a, b) => ({
+        x: (a.clientX + b.clientX) / 2,
+        y: (a.clientY + b.clientY) / 2,
+      });
+      let prevDist = 0,
+        prevMid = null,
+        panStart = null;
+      let lastTap = 0,
+        pinching = false,
+        lastPinchEnd = 0;
 
-    /* TOUCH: pinch & pan on map */
-    const dist = (a,b)=>Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
-    const mid  = (a,b)=>({ x:(a.clientX+b.clientX)/2, y:(a.clientY+b.clientY)/2 });
-    let prevDist = 0, prevMid = null, panStart = null;
-    let lastTap = 0, pinching = false, lastPinchEnd = 0;
+      mapWrap.addEventListener(
+        "touchstart",
+        (e) => {
+          if (e.touches.length === 2) {
+            pinching = true;
+            prevDist = dist(e.touches[0], e.touches[1]);
+            const r = mapWrap.getBoundingClientRect();
+            const m = mid(e.touches[0], e.touches[1]);
+            prevMid = {
+              x: m.x - (r.left + r.width / 2),
+              y: m.y - (r.top + r.height / 2),
+            };
+          } else if (e.touches.length === 1) {
+            panStart = {
+              x: e.touches[0].clientX - tx,
+              y: e.touches[0].clientY - ty,
+            };
+          }
+        },
+        { passive: true }
+      );
 
-    mapWrap.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 2) {
-        pinching = true;
-        prevDist = dist(e.touches[0], e.touches[1]);
-        const r = mapWrap.getBoundingClientRect();
-        const m = mid(e.touches[0], e.touches[1]);
-        prevMid  = { x: m.x - (r.left + r.width/2), y: m.y - (r.top + r.height/2) };
-      } else if (e.touches.length === 1) {
-        panStart = { x: e.touches[0].clientX - tx, y: e.touches[0].clientY - ty };
-      }
-    }, { passive: true });
+      mapWrap.addEventListener(
+        "touchmove",
+        (e) => {
+          e.preventDefault();
+          const rect = mapWrap.getBoundingClientRect();
 
-    mapWrap.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const rect = mapWrap.getBoundingClientRect();
+          if (e.touches.length === 2) {
+            pinching = true;
+            const mScr = mid(e.touches[0], e.touches[1]);
+            const m = {
+              x: mScr.x - (rect.left + rect.width / 2),
+              y: mScr.y - (rect.top + rect.height / 2),
+            };
+            const d = dist(e.touches[0], e.touches[1]);
 
-      if (e.touches.length === 2) {
-        pinching = true;
-        const mScr = mid(e.touches[0], e.touches[1]);
-        const m = { x: mScr.x - (rect.left + rect.width/2), y: mScr.y - (rect.top + rect.height/2) };
-        const d  = dist(e.touches[0], e.touches[1]);
+            tx += m.x - prevMid.x;
+            ty += m.y - prevMid.y;
 
-        tx += (m.x - prevMid.x);
-        ty += (m.y - prevMid.y);
+            const nextS = Math.min(
+              sMax,
+              Math.max(sMin, s * (d / prevDist || 1))
+            );
+            const k = nextS / s;
+            tx = m.x - (m.x - tx) * k;
+            ty = m.y - (m.y - ty) * k;
 
-        const nextS = Math.min(sMax, Math.max(sMin, s * (d / prevDist || 1)));
-        const k = nextS / s;
-        tx = m.x - (m.x - tx) * k;
-        ty = m.y - (m.y - ty) * k;
+            s = nextS;
+            prevDist = d;
+            prevMid = m;
+            applyTransform();
+          } else if (e.touches.length === 1 && panStart) {
+            tx = e.touches[0].clientX - panStart.x;
+            ty = e.touches[0].clientY - panStart.y;
+            applyTransform();
+          }
+        },
+        { passive: false }
+      );
 
-        s = nextS;
-        prevDist = d;
-        prevMid  = m;
-        applyTransform();
-      } else if (e.touches.length === 1 && panStart) {
-        tx = e.touches[0].clientX - panStart.x;
-        ty = e.touches[0].clientY - panStart.y;
-        applyTransform();
-      }
-    }, { passive: false });
+      mapWrap.addEventListener("touchend", (e) => {
+        if (pinching && e.touches.length < 2) {
+          pinching = false;
+          lastPinchEnd = Date.now();
+        }
+        if (e.touches.length === 1) {
+          panStart = {
+            x: e.touches[0].clientX - tx,
+            y: e.touches[0].clientY - ty,
+          };
+        } else {
+          panStart = null;
+          prevMid = null;
+        }
+        const now = Date.now();
+        if (
+          now - lastPinchEnd > 350 &&
+          now - lastTap < 300 &&
+          e.changedTouches.length === 1
+        ) {
+          const rect = mapWrap.getBoundingClientRect();
+          const t = e.changedTouches[0];
+          const m = {
+            x: t.clientX - (rect.left + rect.width / 2),
+            y: t.clientY - (rect.top + rect.height / 2),
+          };
+          const nextS = s < 2 ? 2 : 1;
+          const k = nextS / s;
+          tx = m.x - (m.x - tx) * k;
+          ty = m.y - (m.y - ty) * k;
+          s = nextS;
+          applyTransform();
+        }
+        lastTap = now;
+        recomputeUV();
+        persistTransform();
+      });
 
-    mapWrap.addEventListener('touchend', (e) => {
-      if (pinching && e.touches.length < 2) {
-        pinching = false; lastPinchEnd = Date.now();
-      }
-      if (e.touches.length === 1) {
-        panStart = { x: e.touches[0].clientX - tx, y: e.touches[0].clientY - ty };
-      } else {
-        panStart = null; prevMid = null;
-      }
-      const now = Date.now();
-      if (now - lastPinchEnd > 350 && now - lastTap < 300 && e.changedTouches.length === 1) {
-        const rect = mapWrap.getBoundingClientRect();
-        const t = e.changedTouches[0];
-        const m = { x: t.clientX - (rect.left + rect.width/2), y: t.clientY - (rect.top + rect.height/2) };
-        const nextS = s < 2 ? 2 : 1;
-        const k = nextS / s;
-        tx = m.x - (m.x - tx) * k;
-        ty = m.y - (m.y - ty) * k;
-        s = nextS; applyTransform();
-      }
-      lastTap = now;
-      recomputeUV(); persistTransform();
-    });
-
-    window.addEventListener('resize', ()=>{ applyFromSU(); persistTransform(); });
-    window.addEventListener('orientationchange', ()=>{ applyFromSU(); persistTransform(); });
-  </script>
-</body>
+      window.addEventListener("resize", () => {
+        applyFromSU();
+        persistTransform();
+      });
+      window.addEventListener("orientationchange", () => {
+        applyFromSU();
+        persistTransform();
+      });
+    </script>
+  </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
