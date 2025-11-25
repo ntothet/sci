@@ -370,42 +370,34 @@
         tabText.classList.remove("active");
         mapPanel.classList.add("active");
         textPanel.classList.remove("active");
-        restoreTransform();
         applyFromSU();
+        saveState();
       };
       tabText.onclick = () => {
         tabText.classList.add("active");
         tabMap.classList.remove("active");
         textPanel.classList.add("active");
         mapPanel.classList.remove("active");
-        persistTransform();
         scrollTextTop();
+        saveState();
       };
 
-      /* Map images (old images kept for now) */
-      const MAP1 = "map/1.jpg";
-      const MAP2 = "map/2.jpg";
-      const MAP3 = "map/3.jpg";
-      const MAP4 = "map/4.jpg";
-      const MAP5 = "map/5.jpg";
-      const MAP6 = "map/6.jpg";
+      /* --------- CONFIGURATION --------- */
 
-      const mapUrls = [MAP1, MAP2, MAP3, MAP4, MAP5, MAP6];
-
-      /* --------- RIDDLE TEXTS & INFO (all English, German names unchanged) --------- */
-
-      function getFinalText() {
-        return `
+      const FINAL_TEXT = `
         <h3>Well done – you reached the end of the Kolonie Quest</h3>
         <p>Thank you for walking these paths, listening to voices from the past and present, and engaging with stories of forced labor, resistance, migration, celebration and everyday life in Moers and the Kolonie. Each stop connects individual fates, social movements and small gestures of solidarity.</p>
         <p>As visitors from psychology and pedagogy, you bring your own perspectives on people, biography and participation. We hope this tour offered you impulses for reflection, for conversations with each other, and for encounters with the city. May the impressions travel with you into your work and your everyday life.</p>
         <p>Enjoy the rest of your time at SCI Moers, stay curious, and feel invited to come back — to the Kolonie, to Moers, and to the people whose stories continue here.</p>
       `;
-      }
 
-      /* STAGES CONFIG: 6 riddles with audio and info */
+      const FINAL_MAP = "map/7.jpg";
+
+      /* STAGES CONFIG: Complete stage definitions */
       const stages = [
         {
+          riddleMap: "map/1.jpg",
+          infoMap: "map/1.jpg",
           intro: `
         <p>There was a time of blood and death,<br>
         When people were captured, forced to work to their final breath.<br>
@@ -430,6 +422,8 @@
           riddleAudios: ["audio/riddle_1.mp3"],
         },
         {
+          riddleMap: "map/2.jpg",
+          infoMap: "map/2.jpg",
           intro: `
         <p>There was resistance in the Kolonie here,<br>
         The miners defied the fascist spear.<br>
@@ -462,6 +456,8 @@
           infoAudios: ["audio/moorsoldaten.mp3"],
         },
         {
+          riddleMap: "map/3.jpg",
+          infoMap: "map/3.jpg",
           intro: `
         <p>A stone-cast sign of cultural diversity,<br>
         its migrant stories carried here.<br>
@@ -489,6 +485,8 @@
           riddleAudios: ["audio/riddle_3.mp3"],
         },
         {
+          riddleMap: "map/4.jpg",
+          infoMap: "map/4.jpg",
           intro: `
         <p>The time of Nazism was dark and cold;<br>
         It cut away morality, left hearts controlled.<br>
@@ -520,6 +518,8 @@
           riddleAudios: ["audio/riddle_4.mp3"],
         },
         {
+          riddleMap: "map/5.jpg",
+          infoMap: "map/5.jpg",
           intro: `
         <p>The Kolonie holds a magical place,<br>
         Where one of the greatest stories<br>
@@ -547,6 +547,8 @@
           riddleAudios: ["audio/riddle_5.mp3"],
         },
         {
+          riddleMap: "map/6.jpg",
+          infoMap: "map/7.jpg",
           intro: `
         <p>Where morning slowly finds the street,<br>
         a little booth stands, warm and neat.<br>
@@ -698,28 +700,45 @@
         applyFromSU();
       }
 
-      const STORAGE_KEY = "map_state_v3";
-      function persistTransform() {
+      /* STATE PERSISTENCE */
+      const STATE_KEY = "kolonie_quest_state";
+
+      function saveState() {
         recomputeUV();
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ s, u, vTop }));
-      }
-      function restoreTransform() {
-        const raw = sessionStorage.getItem(STORAGE_KEY);
-        if (!raw) return;
-        try {
-          const saved = JSON.parse(raw);
-          if (typeof saved.s === "number")
-            s = Math.max(sMin, Math.min(sMax, saved.s));
-          if (typeof saved.u === "number")
-            u = Math.min(1, Math.max(0, saved.u));
-          if (typeof saved.vTop === "number")
-            vTop = Math.min(1, Math.max(0, saved.vTop));
-        } catch {}
+        const state = {
+          current,
+          viewMode,
+          activeTab: tabMap.classList.contains("active") ? "map" : "text",
+          transform: { s, u, vTop },
+        };
+        localStorage.setItem(STATE_KEY, JSON.stringify(state));
       }
 
-      window.addEventListener("beforeunload", persistTransform);
+      function loadState() {
+        const raw = localStorage.getItem(STATE_KEY);
+        if (!raw) return null;
+        try {
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      }
+
+      function clearState() {
+        localStorage.removeItem(STATE_KEY);
+      }
+
+      function restoreTransform(saved) {
+        if (!saved || !saved.transform) return;
+        const t = saved.transform;
+        if (typeof t.s === "number") s = Math.max(sMin, Math.min(sMax, t.s));
+        if (typeof t.u === "number") u = Math.min(1, Math.max(0, t.u));
+        if (typeof t.vTop === "number") vTop = Math.min(1, Math.max(0, t.vTop));
+      }
+
+      window.addEventListener("beforeunload", saveState);
       document.addEventListener("visibilitychange", () => {
-        if (document.hidden) persistTransform();
+        if (document.hidden) saveState();
       });
 
       /* IMAGE LOADING */
@@ -739,12 +758,23 @@
       }
 
       let current = 0;
+      let viewMode = "riddle"; // "riddle" or "info"
+
+      function getMapForStage(stageIndex, mode) {
+        if (stageIndex < 0 || stageIndex >= stages.length) return null;
+        const stage = stages[stageIndex];
+        return mode === "info" ? stage.infoMap : stage.riddleMap;
+      }
 
       async function loadStage(i, { preserveTransform = false } = {}) {
-        clearAllAudios(); // stop anything playing from previous riddle
+        clearAllAudios();
+        current = i;
+        viewMode = "riddle";
 
-        const imgIndex = Math.min(i, mapUrls.length - 1);
-        await loadImage(mapUrls[imgIndex], { preserve: preserveTransform });
+        const mapUrl = getMapForStage(i, "riddle");
+        if (mapUrl) {
+          await loadImage(mapUrl, { preserve: preserveTransform });
+        }
 
         title.textContent = "Riddle " + (i + 1);
         riddleDiv.innerHTML = stages[i].intro;
@@ -762,33 +792,141 @@
           riddleDiv.prepend(audioBtn);
         });
 
+        saveState();
         tabText.click();
         scrollTextTop();
       }
 
-      /* START BUTTON */
-      startBtn.onclick = async () => {
+      /* START / RESTORE */
+      async function startQuest() {
         introPanel.style.display = "none";
         topbar.classList.add("visible");
         footer.classList.add("visible");
-
         mapPanel.classList.add("active");
         textPanel.classList.add("active");
-        tabMap.classList.add("active");
 
-        await loadStage(0, { preserveTransform: false });
-        tabMap.click();
+        const saved = loadState();
+        if (
+          saved &&
+          saved.current !== undefined &&
+          saved.current < stages.length
+        ) {
+          // Restore saved state
+          current = saved.current;
+          restoreTransform(saved);
+
+          // Load appropriate map
+          const mapUrl = getMapForStage(current, saved.viewMode);
+          if (mapUrl) {
+            await loadImage(mapUrl, { preserve: true });
+          }
+
+          if (saved.viewMode === "info") {
+            // Restore info view
+            viewMode = "info";
+            title.textContent = "Riddle " + (current + 1);
+            riddleDiv.innerHTML = stages[current].info;
+
+            const audios = stages[current].infoAudios || [];
+            [...audios].reverse().forEach((src) => {
+              const btn = document.createElement("button");
+              btn.className = "audio-btn";
+              const audio = new Audio(src);
+              registerAudio(audio, btn, "Play audio", "Pause audio");
+              riddleDiv.prepend(btn);
+            });
+
+            answerRow.style.display = "none";
+
+            const nextBtn = document.createElement("button");
+            nextBtn.className = "btn";
+            nextBtn.textContent = "Continue";
+            nextBtn.style.marginTop = "0.9rem";
+            riddleDiv.appendChild(nextBtn);
+
+            let working = false;
+            nextBtn.onclick = async () => {
+              if (working) return;
+              working = true;
+              current++;
+              if (current < stages.length) {
+                await loadStage(current, { preserveTransform: true });
+                tabMap.click();
+              } else {
+                viewMode = "finished";
+                title.textContent = "Finish";
+                riddleDiv.innerHTML = FINAL_TEXT;
+                answerRow.style.display = "none";
+                scrollTextTop();
+                loadImage(FINAL_MAP, { preserve: false });
+                clearState();
+              }
+              working = false;
+            };
+          } else {
+            // Restore riddle view
+            viewMode = "riddle";
+            title.textContent = "Riddle " + (current + 1);
+            riddleDiv.innerHTML = stages[current].intro;
+            result.textContent = "";
+            code.value = "";
+            answerRow.style.display = "flex";
+
+            const audios = stages[current].riddleAudios || [];
+            [...audios].reverse().forEach((src) => {
+              const audioBtn = document.createElement("button");
+              audioBtn.className = "audio-btn";
+              const audio = new Audio(src);
+              registerAudio(audio, audioBtn, "Play audio", "Pause audio");
+              riddleDiv.prepend(audioBtn);
+            });
+          }
+
+          // Restore active tab
+          if (saved.activeTab === "map") {
+            tabMap.classList.add("active");
+            tabText.classList.remove("active");
+            mapPanel.classList.add("active");
+            textPanel.classList.remove("active");
+          } else {
+            tabText.classList.add("active");
+            tabMap.classList.remove("active");
+            textPanel.classList.add("active");
+            mapPanel.classList.remove("active");
+          }
+
+          scrollTextTop();
+        } else {
+          // Start from beginning
+          await loadStage(0, { preserveTransform: false });
+          tabMap.click();
+        }
+      }
+
+      startBtn.onclick = () => {
+        clearState(); // Clear old state when explicitly starting
+        startQuest();
       };
+
+      // Auto-restore on page load if state exists
+      (async () => {
+        const saved = loadState();
+        if (saved && saved.current !== undefined) {
+          await startQuest();
+        }
+      })();
 
       /* AFTER CORRECT CODE: show info + Continue */
       function showSolvedInfoAndNext() {
         clearAllAudios();
+        viewMode = "info";
 
         riddleDiv.innerHTML = stages[current].info;
 
-        // Wenn wir in INFO von Riddle 6 sind → map auf 7.jpg umschalten
-        if (current === 5) {
-          loadImage("map/7.jpg", { preserve: false });
+        // Load info map for current stage
+        const mapUrl = getMapForStage(current, "info");
+        if (mapUrl) {
+          loadImage(mapUrl, { preserve: false });
         }
 
         // Info audios
@@ -803,6 +941,7 @@
 
         answerRow.style.display = "none";
         scrollTextTop();
+        saveState();
 
         const nextBtn = document.createElement("button");
         nextBtn.className = "btn";
@@ -815,20 +954,19 @@
         nextBtn.onclick = async () => {
           if (working) return;
           working = true;
-          persistTransform();
           current++;
           if (current < stages.length) {
             await loadStage(current, { preserveTransform: true });
             tabMap.click();
           } else {
             // final closing text
+            viewMode = "finished";
             title.textContent = "Finish";
-            riddleDiv.innerHTML = getFinalText();
+            riddleDiv.innerHTML = FINAL_TEXT;
             answerRow.style.display = "none";
             scrollTextTop();
-
-            // Im Finish die Map durch 7.jpg ersetzen
-            loadImage("map/7.jpg", { preserve: false });
+            loadImage(FINAL_MAP, { preserve: false });
+            clearState();
           }
           working = false;
         };
