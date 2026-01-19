@@ -251,28 +251,22 @@
         alt="SCI Logo"
       />
       <div class="intro-card">
-        <h1>Welcome to the SCI Moers Kolonie Quest</h1>
+        <h1>Willkommen zur Schnitzeljagd vom SCI Moers – auf den Spuren der Kolonie</h1>
         <p>
-          You are visiting SCI in Moers and exploring the Kolonie and its
-          surroundings through short stories, traces of history and small
-          riddles. The map shows locations linked to memory, everyday life and
-          local culture. For each stop, you will hear a short audio and read a
-          riddle.
+          Du besuchst den SCI Moers und erkundest die Kolonie und ihre Umgebung anhand kurzer Geschichten, historischer Spuren und kleiner Rätsel.
+          Die Karte zeigt Orte, die mit Erinnerung, Alltagsleben und lokaler Kultur verbunden sind.
+          An jeder Station hörst du eine kurze Audiosequenz und liest ein Rätsel.
         </p>
         <p>
-          Every solution is a <b>numeric code</b>. After entering the correct
-          code, more background information is revealed and you can continue to
-          the next stop.
+          Jede Lösung ist ein <b>numerischer Code</b>.
+          Nach Eingabe des richtigen Codes werden weitere Hintergrundinformationen freigeschaltet und du kannst zur nächsten Station weitergehen.
         </p>
-        <h2>How it works</h2>
+        <h2>Wie es funktioniert</h2>
         <p>
-          1. Tap <b>Start</b>.<br />
-          2. Use the <b>Riddle</b> tab to read and listen, the <b>Map</b> tab to
-          explore the location.<br />
-          3. Press the <b>audio buttons</b> to listen to each riddle (and, in
-          one case, a song).<br />
-          4. Enter the code, press <b>Check</b> and then <b>Continue</b> to move
-          on.
+          1. Klicke auf <b>Start</b>.<br />
+          2. Verwende den <b>Rätsel</b> Tab zum lesen des Rätsels und hören der Audiodatei, die <b>Karte</b> um den Ort zu erkunden.<br />
+          3. Klicke bei den Audiodatein auf <b>Starten</b> um dir das Rätsel anzuhören.<br />
+          4. Gib den Code ein, klicken auf <b>Prüfen</b> und dann auf <b>weiter</b> um zum nächsten Rätsel zu gelangen.
         </p>
         <div class="intro-actions">
           <button id="startBtn" class="btn">Start</button>
@@ -385,10 +379,11 @@
       /* --------- CONFIGURATION --------- */
 
       const FINAL_TEXT = `
-        <h3>Well done – you reached the end of the Kolonie Quest</h3>
-        <p>Thank you for walking these paths, listening to voices from the past and present, and engaging with stories of forced labor, resistance, migration, celebration and everyday life in Moers and the Kolonie. Each stop connects individual fates, social movements and small gestures of solidarity.</p>
-        <p>As visitors from psychology and pedagogy, you bring your own perspectives on people, biography and participation. We hope this tour offered you impulses for reflection, for conversations with each other, and for encounters with the city. May the impressions travel with you into your work and your everyday life.</p>
-        <p>Enjoy the rest of your time at SCI Moers, stay curious, and feel invited to come back — to the Kolonie, to Moers, and to the people whose stories continue here.</p>
+        <h3>Sehr gut – du hast das Ende der Kolonie-Schnitzeljagd erreicht.</h3>
+        <p>Danke, dass du diese Wege gegangen bist, Stimmen aus Vergangenheit und Gegenwart zugehört und dich mit Geschichten von Zwangsarbeit, Widerstand, Migration, Festen und dem Alltag in Moers und der Kolonie auseinandergesetzt hast.
+        Jede Station verbindet individuelle Schicksale, gesellschaftliche Bewegungen und kleine Gesten der Solidarität.</p>
+        <p>Als Besucherinnen und Besucher aus Psychologie und Pädagogik bringt ihr eure eigenen Perspektiven auf Menschen, Biografien und Teilhabe mit. Wir hoffen, dieser Rundgang hat euch Impulse zum Nachdenken gegeben, für Gespräche miteinander und für Begegnungen mit der Stadt. Mögen die Eindrücke euch in eure Arbeit und euren Alltag begleiten.</p>
+        <p>Genieße die verbleibende Zeit beim SCI Moers, bleib neugierig und fühl dich eingeladen, wiederzukommen — in die Kolonie, nach Moers und zu den Menschen, deren Geschichten hier weiterleben.</p>
       `;
 
       const FINAL_MAP = "map/7.jpg";
@@ -399,25 +394,27 @@
           riddleMap: "map/1.jpg",
           infoMap: "map/1.jpg",
           intro: `
-        <p>There was a time of blood and death,<br>
-        When people were captured, forced to work to their final breath.<br>
-        They still lie here, in the Kolonie,<br>
-        Beneath small stones upon the meadow ground.<br>
-        The youngest of them holds the code —<br>
-        Seek it to learn more, and find the next location.</p>
+        <p>Es gab eine Zeit voll Blut und Tod,<br>
+        Als Menschen gefangen wurden,<br>
+        gezwungen zu arbeiten bis zum letzten Atemzug.<br>
+        Sie liegen noch immer hier, in der Kolonie,<br>
+        Unter kleinen Steinen auf der Wiesen Erde.<br>
+        Der Jüngste von ihnen trägt den Code –<br>
+        Suche ihn, um mehr zu erfahren<br>
+        und den nächsten Ort zu finden.</p>
       `,
-          answer: "1925",
+          answer: "2510",
           info: `
-        <h3>Background – Prisoners of war and forced laborers</h3>
-        <p>Prisoners of war and forced laborers replaced, between 1941 and 1945, in factories, on farms, and in households, the soldiers who had been sent to the front and the personnel who had been withdrawn for war service. Their number, as of March 31, 1943, amounted to 19,341 in the Moers–Geldern employment district — a quarter of all workers.</p>
-        <p>In the former district of Moers, there were at least 141 camps, the most brutal of which were the two concentration camp–like camps of the Friedrich Heinrich coal mine in Kamp-Lintfort. Responsible for the “deployment of Russians” (Russeneinsatz) throughout the Ruhr mining industry, since 1942, was Heinrich Kost, the general director of the mine here in Moers Meerbeck-Hochstraß.</p>
-        <p>The number of foreign victims in the former district of Moers must today be estimated at at least 921 — all officially registered and listed by name in the 2008 documentation “Moers under the Swastika”. Among them were no fewer than 754 young Russians and Ukrainians — considered “subhumans” according to the widely accepted racist terminology of that time.</p>
+        <h3>Kriegsgefangene und Zwangsarbeiter</h3>
+        <p>Kriegsgefangene und Zwangsarbeiter ersetzten zwischen 1941 und 1945 in den Betrieben, auf den Bauernhöfen und in den Haushalten vielfach die zur Front eingezogenen Soldaten und das für den Kriegseinsatz abgezogene Personal. Ihre Zahl betrug am 31. März 1943 für den Arbeitsamtsbezirk Moers–Geldern 19.341 – ein Viertel aller Beschäftigten.</p>
+        <p>Im Altkreis Moers gab es mindestens 141 Lager, am brutalsten die beiden KZ-ähnlichen Lager der Zeche Friedrich Heinrich in Kamp-Lintfort. Zuständig für den „Russeneinsatz“ im gesamten Ruhr-Bergbau war seit 1942 der Generaldirektor der Zeche hier in Moers Meerbeck-Hochstraß, Heinrich Kost.</p>
+        <p>Die Zahl der ausländischen Opfer müssen wir heute für den Altkreis Moers auf mindestens 921 ansetzen – alle standesamtlich beurkundet und in der Dokumentation „Moers unterm Hakenkreuz“ von 2008 namentlich aufgeführt. Unter ihnen waren nicht weniger als 754 junge Russen und Ukrainer – eben „Untermenschen“ nach der damals weithin akzeptierten rassistischen Diktion.</p>
 
-        <img src="pictures/riddle_1_1.jpg" alt="Forced labourers including women" class="info-image" />
-        <small class="info-caption">Women were also used as forced labour.</small>
+        <img src="pictures/riddle_1_1.jpg" alt="Zwangsarbeiter, darunter auch Frauen" class="info-image" />
+        <small class="info-caption">Auch Frauen wurden als Zwangsarbeiterinnen eingesetzt.</small>
 
-        <img src="pictures/riddle_1_2.jpg" alt="Russian forced labourer" class="info-image" />
-        <small class="info-caption">A Russian forced labourer in the region.</small>
+        <img src="pictures/riddle_1_2.jpg" alt="Russischer Zwangsarbeiter" class="info-image" />
+        <small class="info-caption">Ein russischer Zwangsarbeiter in der Region.</small>
       `,
           riddleAudios: ["audio/riddle_1.mp3"],
         },
@@ -425,32 +422,40 @@
           riddleMap: "map/2.jpg",
           infoMap: "map/2.jpg",
           intro: `
-        <p>There was resistance in the Kolonie here,<br>
-        The miners defied the fascist spear.<br>
-        Beneath the soil, they shared their food;<br>
-        In lunchbox tins, their kindness brewed —<br>
-        A piece of bread for those in need,<br>
-        A silent act, a daring deed.</p>
-        <p>There is a song that speaks of solidarity,<br>
-        The sound of resistance, woven with clarity.<br>
-        Listen closely — its echoes trace<br>
-        The author's spirit in this place,<br>
-        Here in the Kolonie.<br>
-        Find the sign with his name on it: Johann Esser</p>
+        <p>Es gab Widerstand hier in der Kolonie,<br>
+        Die Bergleute trotzten der faschistischen Tyrannei.<br>
+        Verborgen unter Erde teilten sie ihr Brot;<br>
+        In Blechdosen wuchs im Stillen ihre große Not —<br>
+        Und doch auch Güte, heimlich gereicht:<br>
+        Ein Stück Brot für jene, die Hunger erreicht,<br>
+        Eine stille Tat, ein mutiges Tun.</p>
+
+        <p>Es gibt ein Lied, das von Solidarität spricht,<br>
+        Den Klang des Widerstands, klar im Licht.<br>
+        Horch nur genau – sein Echo verweht,<br>
+        Doch zeigt es den Geist, der hier noch steht,<br>
+        Hier in der Kolonie.<br>
+        Finde das Schild, das seinen Namen trägt.</p>
       `,
           answer: "1971",
           info: `
-        <h3>Background – Resistance "Courageous Meerbeck"</h3>
-        <p>Miners and industrial workers in the southern part of the former Moers district showed a resistance to Nazi rule that was both courageous and widespread. In the 1990s, this resistance could still be documented — together with some of those involved or their families.</p>
-        <p>However, with the arrests of 1933–1935 and the trials of 1936, this uprising against the fascist dictatorship was largely crushed throughout the Moers district. Larger organized actions — such as those of the Social Democratic "bread deliverers" or of the Moers–Rheinhausen communists around Johann Esser — were no longer seen in the later years of the war.</p>
-        <p>Nevertheless, there continued to be individual victims — people who later could not take part in the democratic new beginning in Moers. Among the tormented "moor soldiers" (Moorsoldaten) of the Emsland camps after 1933 were several dozen resistance fighters from the Moers district.</p>
-        <p>The association "Remembering for the Future" (Erinnern für die Zukunft) plans to erect a memorial in their honor on the Meerbeck Market Square. The square was named in 2013 after Johann Esser, a communist from Moers-Oestrum and the poet of the well-known "Song of the Moor Soldiers" (Moorsoldatenlied) from the Esterwegen concentration camp.</p>
+        <h3>Widerstand „Mutiges Meerbeck“</h3>
+        <p>Bergleute und Industriearbeiter im südlichen Altkreis Moers hatten nach der NS-Machtübernahme einen so mutigen wie breiten Widerstand geleistet. Dieser konnte in den 1990er Jahren – noch zusammen mit einigen von ihnen oder ihren Familien – dokumentiert werden.</p>
+        <p>Mit den Verhaftungen der Jahre 1933–1935 und den Prozessen des Jahres 1936 war dieses Aufbäumen gegen die faschistische Diktatur im gesamten Kreis Moers aber weitestgehend ausgelöscht. Größere organisierte Aktionen – wie jene der sozialdemokratischen „Brotfahrer“ oder die der Moers-Rheinhausener Kommunisten um Johann Esser – waren in der späten Kriegszeit nicht mehr zu verzeichnen.</p>
+        <p>Trotzdem gab es immer wieder einzelne Opfer – Menschen, die später nicht am demokratischen Neubeginn in Moers mitwirken konnten. Unter den geschundenen „Moorsoldaten“ der Emslandlager waren nach 1933 mehrere Dutzend Widerständler aus dem Kreis Moers.</p>
+        <p>Der Verein „Erinnern für die Zukunft“ plant, ihnen zu Ehren auf dem Platz des Meerbecker Marktes ein Mahnmal zu errichten. Der Platz wurde 2013 nach dem Kommunisten Johann Esser aus Moers-Oestrum benannt, dem Dichter des bekannten Moorsoldatenliedes aus dem KZ Esterwegen.</p>
 
-        <img src="pictures/riddle_2_1.jpg" alt="Forced labourers in a coal mine" class="info-image" />
-        <small class="info-caption">Forced labourers working in a coal mine in the Ruhr area.</small>
+
+
+
+
+
+
+        <img src="pictures/riddle_2_1.jpg" alt="Zwangsarbeiter in einem Bergwerk" class="info-image" />
+        <small class="info-caption">Zwangsarbeiter im Einsatz in einem Bergwerk im Ruhrgebiet</small>
 
         <img src="pictures/riddle_2_2.jpg" alt="Johann Esser" class="info-image" />
-        <small class="info-caption">Johann Esser, communist from Moers-Oestrum and author of the "Song of the Moor Soldiers".</small>
+        <small class="info-caption">Johann Esser, Kommunist aus Moers-Oestrum und Dichter des „Moorsoldatenliedes“.</small>
       `,
           riddleAudios: ["audio/riddle_2.mp3", "audio/moorsoldaten.mp3"],
           infoAudios: ["audio/moorsoldaten.mp3"],
@@ -459,26 +464,26 @@
           riddleMap: "map/3.jpg",
           infoMap: "map/3.jpg",
           intro: `
-        <p>A stone-cast sign of cultural diversity,<br>
-        its migrant stories carried here.<br>
-        Once Moers was mostly Protestant —<br>
-        migration softened what was ignorant.<br>
-        Now, as a symbol of pluralism in the Kolonie,<br>
-        it stands at the center, patient and still.<br>
-        Yet sometimes it wakes and rings,<br>
-        calling us gently under its wings.</p>
-        <p>From the place where the sound is born<br>
-        you'll find small hollows in the stone —<br>
-        count them, and you'll know the rest.</p>
-      `,
-          answer: "20",
-          info: `
-        <h3>Background – The Kolonie Meerbeck-Hochstraß</h3>
-        <p>With the sinking of the Rheinpreußen shafts IV in Hochstraß and V in Utfort in 1900, the settlement of Meerbeck-Hochstraß was designed on the drawing board. Construction of the "colony" — today one of the most beautiful mining settlements in Germany — began in March 1904, parallel to the start of coal production. Instead of the tenement blocks previously common in the Ruhr region, planners here followed the model of the English garden cities, designing various types of "living-kitchen houses" with separate entrances, kitchen gardens on the inside, and tree-lined streets, along with the possibility of keeping a goat or a pig. The rental contracts were tied to employment at the mine.</p>
-        <p>People came from across the German Empire, including Upper Silesia and the Ruhr area, as well as Slovenes, German-Austrians, Bohemians and Czechs, Hungarians, and Poles. This mixture of peoples got along well; the hardship faced by workers' families forced solidarity and mutual aid. Associations helped strengthen community bonds. By the outbreak of the First World War, churches and schools, sports facilities, and cooperative stores had been built for roughly 10,000 newcomers — many of them Catholics.</p>
-        <p>Between 1942 and 1944, the "colony," situated between the Rheinpreußen fuel plant and Moers railway station — an area that had still voted clearly against Hitler in 1932/33 — was heavily affected by bombing raids; many houses were destroyed and many lives were lost.</p>
-        <p>With the economic boom after the Second World War, local industry's demand for labor increased. With the recruitment agreements of the 1950s and 1960s, many people from Italy, Spain, Portugal, and Turkey came to the Ruhr region, including to the colony in Moers-Meerbeck. In addition to Christian churches, Meerbeck is also home to a mosque for its many Muslim residents, as well as a Buddhist temple.</p>
+        <p>Ein steinernes Zeichen kultureller Vielfalt,<br>
+        dessen Geschichten von Migranten hierher getragen wurden.<br>
+        Einst war Moers überwiegend protestantisch —<br>
+        Migration bereicherte das, was einst einseitig war.<br>
+        Nun steht es als Symbol des Pluralismus in der Kolonie,<br>
+        in ihrer Mitte, geduldig und still.<br>
+        Doch manchmal erwacht es und erklingt,<br>
+        ruft uns sanft unter seine schützenden Schwingen.</p>
 
+        <p>Von dem Ort, an dem der Klang geboren wird<br>
+        findest du kleine Vertiefungen im Stein —<br>
+        zähl sie, und du wirst den Rest erfahren.</p>
+      `,
+          answer: "5555",
+          info: `
+        <h3>Die Kolonie Meerbeck-Hochstraße</h3>
+        <p>Mit dem Abteufen der Rheinpreußen-Schächte IV in Hochstraß und V in Utfort im Jahr 1900 wurde die Siedlung Meerbeck-Hochstraß auf dem Reißbrett entwickelt. Der Bau der „Kolonie“ – heute eine der schönsten Zechensiedlungen in Deutschland – begann im März 1904, parallel zur beginnenden Kohleförderung. Statt Mietskasernen, wie zuvor im Ruhrgebiet, plante man hier nach dem Vorbild der englischen Gartenstädte verschiedenste „Wohnküchen-Häuser“ mit separatem Eingang, Nutzgärten nach innen und baumbepflanzten Straßen, dazu die Möglichkeit, eine Ziege oder ein Schwein zu halten. Die Mietverträge waren an die Arbeit auf der Zeche gekoppelt.</p>
+        <p>Es kamen Reichsdeutsche aus Oberschlesien oder dem Ruhrgebiet, Slowenen, Deutsch-Österreicher, Böhmen und Tschechen, Ungarn und Polen. Das Völkergemisch verstand sich gut; die Not der Arbeiterfamilien zwang zu Solidarität und Nachbarschaftshilfe. Vereine förderten den Zusammenhalt. Bis zum Ersten Weltkrieg entstanden für etwa 10.000 Zuwanderer – darunter viele Katholiken – Kirchen und Schulen, Sportanlagen und Konsumanstalten.</p>
+        <p>Vom Bombenkrieg zwischen 1942 und 1944 war die „Kolonie“ zwischen dem Rheinpreußen-Treibstoffwerk und dem Moerser Bahnhof, wo 1932/33 noch deutlich gegen Hitler gestimmt worden war, stark betroffen; viele Häuser wurden zerstört, viele Todesopfer waren zu beklagen.</p>
+        <p>Mit dem Wirtschaftswunder nach dem Zweiten Weltkrieg stieg die Nachfrage der hiesigen Industrie nach Arbeitskräften. Mit den Anwerbeabkommen der 1950er und 1960er Jahre kamen viele Menschen aus Italien, Spanien, Portugal und der Türkei ins Ruhrgebiet und auch in die Kolonie nach Moers-Meerbeck. Neben christlichen Kirchen gibt es in Meerbeck heute auch eine Moschee für die vielen muslimischen Bewohner sowie einen buddhistischen Tempel.</p>
         <img src="pictures/riddle_3_1.jpg" alt="Miners setting a friction prop around 1950" class="info-image" />
         <small class="info-caption">Miners setting a friction prop, around 1950 – scenes like this shaped everyday life for many families in the Kolonie.</small>
       `,
@@ -488,26 +493,28 @@
           riddleMap: "map/4.jpg",
           infoMap: "map/4.jpg",
           intro: `
-        <p>The time of Nazism was dark and cold;<br>
-        It cut away morality, left hearts controlled.<br>
-        So many people perished then —<br>
-        Slaughtered, murdered, again and again,<br>
-        Tortured and burned in endless night,<br>
-        Victims of a crime beyond all right.</p>
-        <p>You walk on streets that carry that history,<br>
-        On stones that whisper of human misery —<br>
-        A time when lives were wiped away<br>
-        For resistance, for race, for daring to stay.</p>
-        <p>There stands a marker of stone and steel,<br>
-        And next to it five stones lie sealed.<br>
-        What binds them together reveals the key —<br>
-        A quiet truth of memory.</p>
+        <p>Die Zeit des Nationalsozialismus war dunkel und kalt;<br>
+        Sie schnitt die Moral hinweg und hielt die Herzen in ihrem Halt.<br>
+        So viele Menschen starben damals —<br>
+        Geschlachtet, ermordet, immerzu, ohne Unterlass,<br>
+        Gefoltert und verbrannt in endloser Nacht,<br>
+        Opfer eines Verbrechens jenseits aller menschlichen Macht.</p>
+
+        <p>Du gehst auf Straßen, die diese Geschichte tragen,<br>
+        Auf Steinen, die vom Leid der Menschen klagen —<br>
+        Von einer Zeit, in der Leben ausgelöscht wurden,<br>
+        Für Widerstand, für Herkunft, fürs Bleiben in stummen Spuren.</p>
+
+        <p>Dort steht ein Zeichen aus Stein und Stahl,<br>
+        Und neben ihm liegen fünf Steine, verschlossen und schmal.<br>
+        Was sie miteinander verbindet, enthüllt den Schlüssel —<br>
+        Eine stille Wahrheit des Erinnerns.</p>
       `,
-          answer: "1943",
+          answer: "243",
           info: `
-        <h3>Background – The Leiss an Christen family</h3>
-        <p>The Leiss an Christen family, a mining family from Moers of Polish descent, was executed in February 1943 in the Sachsenhausen concentration camp near Oranienburg on the explicit orders of Reichsführer-SS Heinrich Himmler, because a son of the family had allegedly defected during the Battle of Stalingrad. The annihilation of this family took place under the so-called principle of Sippenhaft (kin liability). Introduced by the National Socialists in 1933 as a repressive measure against relatives of opponents of the regime, the Nazis now applied the instrument of Sippenhaft to the families of deserters and defectors. It was intended as a deterrent at a time when the capitulation of the German 6th Army at Stalingrad marked a turning point to the disadvantage of Nazi rule in the Second World War.</p>
-        <p>After being arrested by the Gestapo in Moers, the entire family — including the three-year-old Marianne Leiss and two heavily pregnant women — was deported to the Sachsenhausen concentration camp and murdered there. As a deterrent, the Nazi press reported nationwide on this criminal act under the headline "Polish Traitor Family Neutralized". The memorial stele commemorates the fate of the family and bears the title "Torn from the World".</p>
+        <h3>Die Familie Leiss und Christen</h3>
+        <p>Die polnisch-stämmige Moerser Bergmannsfamilie Leiss wurde im Februar 1943 auf ausdrücklichen Befehl des Reichsführers SS Heinrich Himmler im KZ Sachsenhausen bei Oranienburg hingerichtet, weil ein Sohn der Familie während der Schlacht um Stalingrad angeblich übergelaufen sei. Das Auslöschen dieser Familie geschah in sogenannter Sippenhaft. Im Jahre 1933 von den Nationalsozialisten als Repressionsmaßnahme gegen die Angehörigen von Regimegegnern eingeführt, setzten sie hier das Instrument der „Sippenhaft“ gegen die Familien von Deserteuren und Überläufern ein. Es sollte der Abschreckung dienen, als sich mit der Kapitulation der 6. Deutschen Armee in Stalingrad die Wende zuungunsten der NS-Herrschaft im Zweiten Weltkrieg vollzog.</p>
+        <p>Nach der Verhaftung durch die Gestapo in Moers wurde die ganze Familie, darunter die dreijährige Marianne Leiss und zwei hochschwangere Frauen, in das KZ Sachsenhausen verschleppt und dort ermordet. Zur Abschreckung berichtete die NS-Presse reichsweit unter der Überschrift „Polnische Verräterfamilie unschädlich gemacht“ über die verbrecherische Tat. Die Stele erinnert an das Schicksal der Familie und trägt den Titel „Aus der Welt gerissen“.</p>
 
         <img src="pictures/riddle_4_1.jpg" alt="Leiss family portrait" class="info-image" />
         <small class="info-caption">Josefa Leiss (seated left), her daughter Hanna, married Christen; standing (from left) the sons Josef, Wenzel and Felix Leiss. Bottom right: father Franz Leiss, who had already died at the time of the family's arrest.</small>
@@ -521,28 +528,30 @@
           riddleMap: "map/5.jpg",
           infoMap: "map/5.jpg",
           intro: `
-        <p>The Kolonie holds a magical place,<br>
-        Where one of the greatest stories<br>
-        Is celebrated with lights and glories,<br>
-        And brings a smile to every face.</p>
-        <p>From afar, the shimmering lights appear,<br>
-        Like stars on the ground, they shine so clear.<br>
-        When you arrive, a warming brew awaits —<br>
-        A cup of hot wine to open winter's gates.</p>
-        <p>While you sip your glowing wine,<br>
-        Count the glowing reindeer, Santas, and presents in line,<br>
-        And you will be ready, your heart in time,<br>
-        To discover the secret of this rhyme.</p>
-      `,
-          answer: "161010",
-          info: `
-        <h3>Background – The Moers Christmas House</h3>
-        <p>The Moers Christmas House is a privately run project that is carried out in free time. The house is located in Moers at Moselstraße 12 m (left).</p>
-        <p>The decorations and lighting are in the garden and courtyard behind the house. Visitors are therefore asked to ring the doorbell at the Scheepers family, Moselstraße 12 m (left), or to use the side entrance (illuminated tree and lit gate arch) at Moselstraße 10 g. "We wish everyone a wonderful Christmas season and look forward to your visit. Hot mulled wine and other hot or cold drinks are also available."</p>
-        <p>The Moers Christmas House is decorated with over 80,000 lights, accompanied by cozy Christmas music, every day from 5:00 PM to 9:00 PM.</p>
+        <p>Die Kolonie birgt einen magischen Ort,<br>
+        An dem eine der größten Geschichten<br>
+        Mit Lichtern und Festlichkeiten begangen wird<br>
+        Und jedem Menschen ein Lächeln schenkt.</p>
 
-        <img src="pictures/riddle_5_1.jpg" alt="Moers Christmas House" class="info-image" />
-        <small class="info-caption">The Moers Christmas House with thousands of lights, music and hot drinks – a seasonal highlight in the Kolonie.</small>
+        <p>Aus der Ferne erscheinen die funkelnden Lichter,<br>
+        Wie Sterne auf der Erde leuchten sie so klar.<br>
+        Wenn du ankommst, erwartet dich ein wärmender Trunk —<br>
+        Ein Becher heißer Wein, der das Tor zum Winter öffnet.</p>
+
+        <p>Während du deinen glühenden Wein genießt,<br>
+        Zähle die Rentiere, Weihnachtsmänner und Schneemänner in Reih und Glied,<br>
+        Und du wirst bereit sein,<br>
+        Das Geheimnis dieses Reims zu entdecken.</p>
+      `,
+          answer: "1294",
+          info: `
+        <h3>Das Moerser Weihnachtshaus</h3>
+        <p>Das Moerser Weihnachtshaus ist ein privat betriebenes Projekt, das in der Freizeit verwirklicht wird. Das Haus befindet sich in Moers, Moselstraße 12 m (links).</p>
+        <p>Die Dekorationen und Beleuchtungen befinden sich im Garten und im Hof hinter dem Haus. Besucher werden daher gebeten, bei der Familie Scheepers, Moselstraße 12 m (links), zu klingeln oder den Seiteneingang (beleuchteter Baum und erleuchteter Torbogen) an der Moselstraße 10 g zu nutzen. Wir wünschen allen eine wunderbare Weihnachtszeit und freuen uns auf euren Besuch. Heißer Glühwein sowie weitere warme oder kalte Getränke sind ebenfalls erhältlich.</p>
+        <p>Das Moerser Weihnachtshaus ist mit über 80.000 Lichtern geschmückt und wird täglich von 17:00 bis 21:00 Uhr von gemütlicher Weihnachtsmusik begleitet.</p>
+
+        <img src="pictures/riddle_5_1.jpg" alt="Moerser Weihnachtshaus" class="info-image" />
+        <small class="info-caption">Das Moerser Weihnachtshaus mit tausenden Lichtern, Musik und heißen Getränken – ein saisonales Highlight in der Kolonie.</small>
       `,
           riddleAudios: ["audio/riddle_5.mp3"],
         },
@@ -550,45 +559,49 @@
           riddleMap: "map/6.jpg",
           infoMap: "map/7.jpg",
           intro: `
-        <p>Where morning slowly finds the street,<br>
-        a little booth stands, warm and neat.<br>
-        Its window glows before the sun,<br>
-        a friendly place for everyone.</p>
-        <p>Newspapers whisper in the breeze,<br>
-        the coffee drifts with gentle ease.<br>
-        A quiet "Moin," a nod, a grin —<br>
-        the Pott begins its day within.</p>
-        <p>Kids swap candies, dreams, and plans,<br>
-        coins dance lightly in their hands.<br>
-        Stories gather, come and go —<br>
-        the booth has heard them all, you know.</p>
-        <p>Seek the booth if you want a treat,<br>
-        and on the bottom of its paper sheet,<br>
-        you'll find the path to the final shelter,<br>
-        guiding you safe through every welter.</p>
+        <p>Dort, wo der Morgen langsam die Straße erreicht,<br>
+        steht ein kleines Büdchen, warm und leicht.<br>
+        Sein Fenster leuchtet vor der Sonne klar —<br>
+        ein freundlicher Ort für alle, die kommen, Jahr für Jahr.</p>
+
+        <p>Zeitungen flüstern im leisen Wind,<br>
+        der Kaffeeduft zieht sanft geschwind.<br>
+        Ein leises „Moin“, ein Nicken, ein Lachen —<br>
+        im Pott beginnt der Tag mit solchen Sachen.</p>
+
+        <p>Kinder tauschen Süßes, Träume, Pläne,<br>
+        Münzen klimpern in kleinen Händen.<br>
+        Geschichten kommen, Geschichten geh’n —<br>
+        das Büdchen hat sie alle gesehen.</p>
+
+        <p>Such das Büdchen, wenn du etwas Süßes begehrst,<br>
+        und auf dem unteren Rand seines Zettels wirst du —<br>
+        ganz unbeschwert —<br>
+        den Weg zum letzten Zufluchtsort entdecken,<br>
+        der dich sicher führt durch jedes Verstecken.</p>
       `,
           answer: "1900",
           info: `
-        <h3>Dinner Time &amp; Kiosk Culture</h3>
-        <p><b>Dinner Time → Go to: Zum Bollwerk 107, 47441 Moers</b></p>
-        <p>And while you walk, here's some info on "Kiosk" in Germany:</p>
-        <p>The history of kiosks in Germany began with the "Wasserhäuschen" (little water houses) in the Ruhr area in the mid-19th century, which were intended to offer workers healthy refreshments. From the original drinking halls, which later also sold newspapers, today's kiosks and small stands ("Büdchen") developed. The word "kiosk" itself originally comes from Turkish and referred to garden pavilions before it entered German in the 18th century via French.</p>
-        <h4>Origins and Development</h4>
-        <p>Word origin: The word "kiosk" comes from Persian ("köşk") and means "garden pavilion".</p>
-        <p>Cultural transmission: In the 18th century, it came into German via the French word "kiosque" and originally referred to freestanding pavilions in parks and palaces.</p>
-        <p>Wasserhäuschen: In Germany, the precursors to modern kiosks emerged during industrialization in the 19th century, particularly in the Ruhr area.</p>
-        <p>Purpose: These "Wasserhäuschen" were intended to offer industrial workers a healthy alternative to alcohol by selling mineral water.</p>
-        <p>Expansion of offerings: Over time, newspapers and other goods were added to the selection of the Wasserhäuschen.</p>
-        <h4>Kiosk Culture in Germany</h4>
-        <p>Center: The Rhine-Ruhr region is considered the stronghold of German kiosk culture, as many kiosks developed there near factories and mines.</p>
-        <p>Cultural significance: Kiosks are more than just points of sale; they have become important places for social interaction and everyday urban life.</p>
-        <p>Regionally different names: Today, they exist under various names such as "Büdchen," "Wasserhäuschen," "Späti," or "Trinkhalle".</p>
+        <h3>Abendessen & Kioskkultur</h3>
+        <p><b>Abendessenzeit → Gehe zu: Zum Bollwerk 107, 47441 Moers</b></p>
+        <p>Und während du gehst, hier einige Infos über den „Kiosk“ in Deutschland:</p>
+        <p>Die Geschichte der Kioske in Deutschland begann mit den „Wasserhäuschen“ im Ruhrgebiet im mittleren 19. Jahrhundert, die dazu gedacht waren, den Arbeitern gesunde Erfrischungen anzubieten. Aus den ursprünglichen Trinkhallen, die später auch Zeitungen verkauften, entwickelten sich die heutigen Kioske und kleinen Stände („Büdchen“). Das Wort „Kiosk“ selbst kommt ursprünglich aus dem Türkischen und bezeichnete Gartenpavillons, bevor es im 18. Jahrhundert über das Französische in die deutsche Sprache einging.</p>
+        <h4>Ursprünge und Entwicklung</h4>
+        <p>Wortursprung: Das Wort „Kiosk“ stammt aus dem Persischen („köşk“) und bedeutet „Gartenpavillon“.</p>
+        <p>Kulturelle Übertragung: Im 18. Jahrhundert gelangte es über das französische Wort „kiosque“ ins Deutsche und bezog sich ursprünglich auf freistehende Pavillons in Parks und Palästen.</p>
+        <p>Wasserhäuschen: In Deutschland entstanden die Vorläufer der modernen Kioske während der Industrialisierung im 19. Jahrhundert, besonders im Ruhrgebiet.</p>
+        <p>Zweck: Diese „Wasserhäuschen“ sollten den Industriearbeitern eine gesunde Alternative zu Alkohol bieten, indem sie Mineralwasser verkauften.</p>
+        <p>Erweiterung des Angebots: Im Laufe der Zeit wurden Zeitungen und andere Waren zum Sortiment der Wasserhäuschen hinzugefügt.</p>
+        <h4>Kiosk-Kultur in Deutschland</h4>
+        <p>Zentrum: Die Rhein-Ruhr-Region gilt als Hochburg der deutschen Kiosk-Kultur, da dort viele Kioske in der Nähe von Fabriken und Bergwerken entstanden.</p>
+        <p>Kulturelle Bedeutung: Kioske sind mehr als nur Verkaufsstellen; sie sind zu wichtigen Orten für soziale Interaktion und das alltägliche urbane Leben geworden.</p>
+        <p>Regionale Unterschiede in der Bezeichnung: Heute existieren sie unter verschiedenen Namen wie „Büdchen“, „Wasserhäuschen“, „Späti“ oder „Trinkhalle“.</p>
 
-        <img src="pictures/riddle_6_1.jpg" alt="Trinkhalle in Meerbeck around 1910" class="info-image" />
-        <small class="info-caption">A "Trinkhalle" in Meerbeck around 1910 – early predecessors of today's kiosks.</small>
+        <img src="pictures/riddle_6_1.jpg" alt="Trinkhalle in Meerbeck um 1910" class="info-image" />
+        <small class="info-caption">Eine "Trinkhalle" in Meerbeck um 1910 – frühe Vorläufer der heutigen Kioske.</small>
 
         <img src="pictures/riddle_6_2.jpg" alt="Kiosk in Duisburg" class="info-image" />
-        <small class="info-caption">A kiosk in Duisburg – kiosks remain important social meeting points across the Ruhr region.</small>
+        <small class="info-caption">Ein Kiosk in Duisburg – Kioske sind im gesamten Ruhrgebiet weiterhin wichtige soziale Treffpunkte.</small>
       `,
           riddleAudios: ["audio/riddle_6.mp3"],
         },
